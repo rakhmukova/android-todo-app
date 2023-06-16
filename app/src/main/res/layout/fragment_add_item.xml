@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipToPadding="false" >
+
+  <androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/back_primary"
+    app:titleTextColor="@color/label_primary"
+    app:popupTheme="@style/Theme.TodoApp"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageButton
+      android:id="@+id/close_task_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/close"
+      android:background="@android:color/transparent"
+      android:layout_gravity="start" />
+
+    <Button
+      android:id="@+id/save_task_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/save_task"
+      style="@style/Theme.ToDoApp.SaveButtonStyle"
+      android:layout_gravity="end"/>
+
+  </androidx.appcompat.widget.Toolbar>
+
+  <EditText
+    android:id="@+id/task_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_border"
+    android:elevation="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:padding="16dp"
+    android:minLines="3"
+    android:gravity="top"
+    android:hint="@string/initial_description"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar"
+    android:autofillHints="@string/initial_description"
+    android:inputType="textMultiLine"
+    tools:ignore="LabelFor"/>
+
+  <TextView
+    android:id="@+id/importance_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/priority"
+    android:textColor="@color/label_primary"
+    android:layout_marginTop="20dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:textSize="16sp"
+    android:textStyle="normal"
+    app:layout_constraintTop_toBottomOf="@id/task_description" />
+
+  <TextView
+    android:id="@+id/importance_value"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/no_priority"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:textColor="@color/label_tertiary"
+    app:layout_constraintTop_toBottomOf="@id/importance_title" />
+
+  <View
+    android:id="@+id/below_importance_separator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@color/support_separator"
+    app:layout_constraintTop_toBottomOf="@id/importance_value" />
+
+  <TextView
+    android:id="@+id/do_up_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/deadline"
+    android:textColor="@color/label_primary"
+    android:textSize="16sp"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:textStyle="normal"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/below_importance_separator"/>
+
+  <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/switch_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checked="false"
+    android:layout_marginTop="4dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintLeft_toRightOf="@id/do_up_title"
+    app:layout_constraintTop_toBottomOf="@id/below_importance_separator"
+    app:thumbTint="@color/blue" />
+
+  <TextView
+    android:id="@+id/deadline_date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/blue"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:text="@string/no_date"
+    app:layout_constraintTop_toBottomOf="@id/do_up_title" />
+
+  <View
+    android:id="@+id/below_do_up_separator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="32dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@color/support_separator"
+    app:layout_constraintTop_toBottomOf="@id/deadline_date" />
+
+  <androidx.appcompat.widget.AppCompatButton
+    android:id="@+id/delete_task_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/delete_task"
+    android:layout_marginTop="4dp"
+    android:layout_marginStart="20dp"
+    android:drawableStart="@drawable/delete"
+    style="@style/Theme.ToDoApp.DeleteButtonStyle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/below_do_up_separator" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

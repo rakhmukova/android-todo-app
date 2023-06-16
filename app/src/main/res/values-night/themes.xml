@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Theme.TodoApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="support_separator">@color/support_separator</item>
+    <item name="support_overlay">@color/support_overlay</item>
+    <item name="label_primary">@color/label_primary</item>
+    <item name="label_secondary">@color/label_secondary</item>
+    <item name="label_tertiary">@color/label_tertiary</item>
+    <item name="label_disable">@color/label_disable</item>
+    <item name="color_red">@color/red</item>
+    <item name="color_green">@color/green</item>
+    <item name="color_blue">@color/blue</item>
+    <item name="color_gray">@color/gray</item>
+    <item name="color_gray_light">@color/light_gray</item>
+    <item name="color_white">@color/white</item>
+    <item name="back_primary">@color/back_primary</item>
+    <item name="back_secondary">@color/back_secondary</item>
+    <item name="back_elevated">@color/back_elevated</item>
+  </style>
+</resources>
