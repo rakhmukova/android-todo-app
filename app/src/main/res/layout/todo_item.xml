@@ -26,6 +26,7 @@
     android:textColor="#332E2B"
     android:textSize="19sp"
     android:maxLines="3"
+    android:ellipsize="end"
     app:layout_constraintStart_toEndOf="@+id/is_done_radio_button"
     app:layout_constraintEnd_toStartOf="@+id/swipe_image"
     app:layout_constraintTop_toTopOf="parent"
