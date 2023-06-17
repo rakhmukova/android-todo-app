@@ -48,6 +48,7 @@ class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    // TODO: fix
     private fun setupDescription() {
         binding.taskDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
