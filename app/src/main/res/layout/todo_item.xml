@@ -22,7 +22,7 @@
     android:id="@+id/task_text"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:textColor="#332E2B"
+    android:textColor="@color/label_primary"
     android:textSize="19sp"
     android:maxLines="3"
     android:ellipsize="end"
