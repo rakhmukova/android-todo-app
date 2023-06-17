@@ -16,7 +16,7 @@ class AddTodoItemViewModel(private val repository: TodoItemsRepository) : ViewMo
 
     fun updateDescription(description: String) {
         val currentTodoItem = _todoItem.value
-        val updatedTodoItem = currentTodoItem.copy(description = description)
+        val updatedTodoItem = currentTodoItem.copy(text = description)
         _todoItem.value = updatedTodoItem
     }
 

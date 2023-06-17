@@ -20,7 +20,7 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentAddItemBinding
 import com.example.todoapp.viewmodel.additem.AddTodoItemViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,13 +63,14 @@ class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
     }
 
     private fun setupViewModel() {
-        lifecycleScope.launch {
-            addTodoItemViewModel.todoItem.collect { todoItem ->
+        lifecycleScope.launchWhenStarted {
+            addTodoItemViewModel.todoItem.collectLatest { todoItem ->
                 binding.importanceValue.text = todoItem.priority.name.lowercase().replaceFirstChar { it.uppercase() }
-                binding.taskDescription.setText(todoItem.description)
+                binding.taskDescription.setText(todoItem.text)
                 binding.deadlineDate.text = parseData(todoItem.deadline)
             }
         }
+
         addTodoItemViewModel.createOrFind(arguments?.getString(ARG_TODO_ITEM_ID))
         binding.switchButton.isChecked = addTodoItemViewModel.todoItem.value.deadline != null
     }

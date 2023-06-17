@@ -23,7 +23,7 @@ class TodoListViewModel(private val repository: TodoItemsRepository) : ViewModel
     }
 
     // TODO: fix
-    fun countCompletedTasks(): Int = _todoItems.value.count { it.isDone }
+    fun countCompletedTasks(): Int = _todoItems.value.count { it.isCompleted }
 
     private fun updateTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
@@ -36,7 +36,7 @@ class TodoListViewModel(private val repository: TodoItemsRepository) : ViewModel
     }
 
     fun updateChecked(todoItem: TodoItem, isChecked: Boolean) {
-        val modifiedItem = todoItem.copy(isDone = isChecked, modifiedAt = Date())
+        val modifiedItem = todoItem.copy(isCompleted = isChecked, modifiedAt = Date())
         updateTodoItem(modifiedItem)
         filterTodoItems(_showOnlyCompletedTasks.value)
     }
@@ -52,7 +52,7 @@ class TodoListViewModel(private val repository: TodoItemsRepository) : ViewModel
     fun filterTodoItems(showOnlyCompletedTasks: Boolean) {
         val allItems = _todoItems.value
         val filteredTodoItems = if (showOnlyCompletedTasks) {
-            allItems.filter { !it.isDone }
+            allItems.filter { !it.isCompleted }
         } else {
             allItems
         }

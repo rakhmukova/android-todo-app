@@ -4,9 +4,10 @@ import java.util.*
 
 data class TodoItem(
     val id: String,
-    val description: String,
+    val text: String,
     val priority: Priority,
     val deadline: Date?,
-    val isDone: Boolean,
+    val isCompleted: Boolean,
     val createdAt: Date,
-    val modifiedAt: Date?)
+    val modifiedAt: Date?
+)

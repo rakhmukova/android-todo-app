@@ -10,8 +10,8 @@ class TodoItemViewHolder(
     ) : RecyclerView.ViewHolder(binding.root) {
 
     fun onBind(todoItem: TodoItem){
-        binding.isDoneRadioButton.isChecked = todoItem.isDone
-        binding.taskText.text = todoItem.description
+        binding.isDoneRadioButton.isChecked = todoItem.isCompleted
+        binding.taskText.text = todoItem.text
 
         binding.isDoneRadioButton.setOnCheckedChangeListener { _, isChecked ->
             callbacks.onTodoItemCheckedChanged(todoItem, isChecked)

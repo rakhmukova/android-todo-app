@@ -15,7 +15,7 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
 import com.example.todoapp.ui.additem.AddTodoItemFragment
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 
 
 class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
@@ -45,8 +45,8 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     }
 
     private fun setupViewModel() {
-        lifecycleScope.launch {
-            todoListViewModel.filteredTodoItems.collect {
+        lifecycleScope.launchWhenStarted {
+            todoListViewModel.filteredTodoItems.collectLatest {
                 binding.completedTitle.text = String.format(getString(R.string.completed_tasks),
                     todoListViewModel.countCompletedTasks())
             }
@@ -61,14 +61,14 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         binding.todoItems.layoutManager = LinearLayoutManager(requireContext())
         binding.todoItems.addItemDecoration(TodoItemsOffsetItemDecoration(bottomOffset = 16f.toInt()))
 
-        lifecycleScope.launch {
-            todoListViewModel.todoItems.collect { list ->
+        lifecycleScope.launchWhenStarted {
+            todoListViewModel.todoItems.collectLatest { list ->
                 todoAdapter.submitList(list)
             }
         }
 
-        lifecycleScope.launch {
-            todoListViewModel.filteredTodoItems.collect { filteredList ->
+        lifecycleScope.launchWhenStarted {
+            todoListViewModel.filteredTodoItems.collectLatest { filteredList ->
                 todoAdapter.submitList(filteredList)
             }
         }
