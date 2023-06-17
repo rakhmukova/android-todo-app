@@ -52,7 +52,7 @@ class TodoItemsRepository {
 
     private fun getInitialTodoItems(): List<TodoItem> = listOf(
         TodoItem("1", "Покормить черепаху", Priority.HIGH, null, false, Date(), null),
-        TodoItem("2", "Выгулять кота", Priority.NO, Date(), false, Date(), Date()),
+        TodoItem("2", "Выгулять кота", Priority.COMMON, Date(), false, Date(), Date()),
         TodoItem("3", "Записать видео с домашкой", Priority.LOW, null, true, Date(), Date()),
         TodoItem("4", "Не представляю, что можно придумать, чтобы это занимало больше трех строк",
             Priority.LOW, Date(), false, Date(), null)

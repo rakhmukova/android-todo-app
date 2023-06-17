@@ -56,7 +56,7 @@ class AddTodoItemViewModel(private val repository: TodoItemsRepository) : ViewMo
     }
 
     private fun createTodoItem(): TodoItem {
-        return TodoItem(UUID.randomUUID().toString(), "", Priority.NO,
+        return TodoItem(UUID.randomUUID().toString(), "", Priority.COMMON,
             Date(), false, Date(), Date())
     }
 }

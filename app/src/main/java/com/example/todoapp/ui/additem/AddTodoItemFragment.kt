@@ -19,9 +19,10 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentAddItemBinding
+import com.example.todoapp.util.DateParser
+import com.example.todoapp.util.PriorityMapper
 import com.example.todoapp.viewmodel.additem.AddTodoItemViewModel
 import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
@@ -65,9 +66,9 @@ class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
     private fun setupViewModel() {
         lifecycleScope.launchWhenStarted {
             addTodoItemViewModel.todoItem.collectLatest { todoItem ->
-                binding.importanceValue.text = todoItem.priority.name.lowercase().replaceFirstChar { it.uppercase() }
+                binding.importanceValue.text = PriorityMapper.mapToString(todoItem.priority)
                 binding.taskDescription.setText(todoItem.text)
-                binding.deadlineDate.text = parseData(todoItem.deadline)
+                binding.deadlineDate.text = DateParser.parse(todoItem.deadline)
             }
         }
 
@@ -91,7 +92,7 @@ class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_item_no_importance -> {
-                        addTodoItemViewModel.updatePriority(Priority.NO)
+                        addTodoItemViewModel.updatePriority(Priority.COMMON)
                         true
                     }
                     R.id.menu_item_low_importance -> {
@@ -149,16 +150,6 @@ class AddTodoItemFragment: Fragment(R.layout.fragment_add_item) {
             } else {
                 addTodoItemViewModel.updateDeadline(null)
             }
-        }
-    }
-
-    // TODO: create separate class
-    private fun parseData(date: Date?): String {
-        return if (date != null) {
-            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-            dateFormat.format(date)
-        } else {
-            getString(R.string.no_date)
         }
     }
 
