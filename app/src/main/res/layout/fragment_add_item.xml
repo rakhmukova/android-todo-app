@@ -29,7 +29,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/save_task"
-      style="@style/Theme.ToDoApp.SaveButtonStyle"
+      style="@style/SaveButtonStyle"
       android:layout_gravity="end"/>
 
   </androidx.appcompat.widget.Toolbar>
@@ -141,7 +141,7 @@
     android:layout_marginTop="4dp"
     android:layout_marginStart="20dp"
     android:drawableStart="@drawable/delete"
-    style="@style/Theme.ToDoApp.DeleteButtonStyle"
+    style="@style/DeleteButtonStyle"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/below_do_up_separator" />
 
