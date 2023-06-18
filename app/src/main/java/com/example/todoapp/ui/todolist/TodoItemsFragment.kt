@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
@@ -16,6 +18,7 @@ import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
 import com.example.todoapp.ui.additem.AddTodoItemFragment
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
@@ -45,10 +48,14 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     }
 
     private fun setupViewModel() {
-        lifecycleScope.launchWhenStarted {
-            todoListViewModel.filteredTodoItems.collectLatest {
-                binding.completedTitle.text = String.format(getString(R.string.completed_tasks),
-                    todoListViewModel.countCompletedTasks())
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                todoListViewModel.filteredTodoItems.collectLatest {
+                    binding.completedTitle.text = String.format(
+                        getString(R.string.completed_tasks),
+                        todoListViewModel.countCompletedTasks()
+                    )
+                }
             }
         }
 
@@ -61,15 +68,19 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         binding.todoItems.layoutManager = LinearLayoutManager(requireContext())
         binding.todoItems.addItemDecoration(TodoItemsOffsetItemDecoration(bottomOffset = 16f.toInt()))
 
-        lifecycleScope.launchWhenStarted {
-            todoListViewModel.todoItems.collectLatest { list ->
-                todoAdapter.submitList(list)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                todoListViewModel.todoItems.collectLatest { list ->
+                    todoAdapter.submitList(list)
+                }
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            todoListViewModel.filteredTodoItems.collectLatest { filteredList ->
-                todoAdapter.submitList(filteredList)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                todoListViewModel.filteredTodoItems.collectLatest { filteredList ->
+                    todoAdapter.submitList(filteredList)
+                }
             }
         }
     }
