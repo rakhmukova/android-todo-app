@@ -13,10 +13,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:button="@drawable/checkbox_task_done"
+    android:gravity="top"
     app:tint="@color/white"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
     android:id="@+id/task_text"
@@ -26,9 +26,20 @@
     android:textSize="19sp"
     android:maxLines="3"
     android:ellipsize="end"
+    android:includeFontPadding="false"
     app:layout_constraintStart_toEndOf="@+id/is_done_radio_button"
     app:layout_constraintEnd_toStartOf="@+id/info_image"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/task_deadline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/label_secondary"
+    android:layout_marginTop="8dp"
+    android:textSize="14sp"
+    app:layout_constraintStart_toStartOf="@+id/task_text"
+    app:layout_constraintTop_toBottomOf="@id/task_text"
     app:layout_constraintBottom_toBottomOf="parent" />
 
   <ImageView
@@ -40,7 +51,6 @@
     app:layout_constraintStart_toEndOf="@+id/task_text"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
     android:contentDescription="@string/info"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
