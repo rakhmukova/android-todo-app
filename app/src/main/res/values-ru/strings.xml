@@ -13,6 +13,7 @@
   <string name="save_task">Сохранить</string>
   <string name="cancel_task">Отменить</string>
   <string name="delete_task">Удалить</string>
+  <string name="close_task">Закрыть</string>
 
   <string name="initial_description">Что надо сделать?</string>
 
