@@ -51,12 +51,12 @@ class TodoItemsRepository {
     }
 
     private fun getInitialTodoItems(): List<TodoItem> = listOf(
-        TodoItem("1", "Покормить черепаху", Priority.HIGH, null, false, Date(), null),
-        TodoItem("2", "Выгулять кота", Priority.COMMON, Date(), false, Date(), Date()),
-        TodoItem("3", "Записать видео с домашкой", Priority.LOW, null, true, Date(), Date()),
-        TodoItem("4", "Не представляю, что можно придумать, чтобы это занимало больше трех строк. Может быть...",
-            Priority.LOW, Date(), false, Date(), null),
-        TodoItem("5", "Я пришёл к тебе с приветом,\n" +
+        TodoItem(id = "1", text = "Покормить черепаху", priority = Priority.HIGH, deadline = Date()),
+        TodoItem(id = "2", text = "Выгулять кота", deadline = Date()),
+        TodoItem(id = "3", text = "Записать видео с домашкой", priority = Priority.LOW, isCompleted = true),
+        TodoItem(id = "4", text = "Не представляю, что можно придумать, чтобы это занимало больше трех строк. Может быть...",
+            priority = Priority.LOW, isCompleted = true, modifiedAt = Date()),
+        TodoItem(id = "5", text = "Я пришёл к тебе с приветом,\n" +
                 "Рассказать, что солнце встало,\n" +
                 "Что оно горячим светом\n" +
                 "По листам затрепетало;\n" +
@@ -75,6 +75,6 @@ class TodoItemsRepository {
                 "На меня весельем веет,\n" +
                 "Что не знаю сам, что́ буду\n" +
                 "Петь — но только песня зреет.",
-            Priority.LOW, Date(), false, Date(), null)
+            Priority.LOW, deadline =  Date())
     )
 }
