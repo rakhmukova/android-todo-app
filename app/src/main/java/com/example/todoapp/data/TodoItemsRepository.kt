@@ -35,7 +35,7 @@ class TodoItemsRepository {
         val index = todoItems.indexOfFirst { it.id == todoItem.id }
         if (index != -1) {
             todoItems[index] = todoItem
-            todoItemsFlow.value = todoItems
+            updateTodoItemsFlow()
         }
     }
 
@@ -54,7 +54,27 @@ class TodoItemsRepository {
         TodoItem("1", "Покормить черепаху", Priority.HIGH, null, false, Date(), null),
         TodoItem("2", "Выгулять кота", Priority.COMMON, Date(), false, Date(), Date()),
         TodoItem("3", "Записать видео с домашкой", Priority.LOW, null, true, Date(), Date()),
-        TodoItem("4", "Не представляю, что можно придумать, чтобы это занимало больше трех строк",
+        TodoItem("4", "Не представляю, что можно придумать, чтобы это занимало больше трех строк. Может быть...",
+            Priority.LOW, Date(), false, Date(), null),
+        TodoItem("5", "Я пришёл к тебе с приветом,\n" +
+                "Рассказать, что солнце встало,\n" +
+                "Что оно горячим светом\n" +
+                "По листам затрепетало;\n" +
+                "\n" +
+                "Рассказать, что лес проснулся,\n" +
+                "Весь проснулся, веткой каждой,\n" +
+                "Каждой птицей встрепенулся\n" +
+                "И весенней полон жаждой;\n" +
+                "\n" +
+                "Рассказать, что с той же страстью,\n" +
+                "Как вчера, пришёл я снова,\n" +
+                "Что душа всё так же счастью\n" +
+                "И тебе служить готова;\n" +
+                "\n" +
+                "Рассказать, что отовсюду\n" +
+                "На меня весельем веет,\n" +
+                "Что не знаю сам, что́ буду\n" +
+                "Петь — но только песня зреет.",
             Priority.LOW, Date(), false, Date(), null)
     )
 }
