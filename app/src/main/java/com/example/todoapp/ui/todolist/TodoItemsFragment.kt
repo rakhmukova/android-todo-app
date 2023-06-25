@@ -50,10 +50,10 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     private fun setupViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                todoListViewModel.filteredTodoItems.collectLatest {
+                todoListViewModel.completedTasksCount.collectLatest {
                     binding.completedTitle.text = String.format(
                         getString(R.string.completed_tasks),
-                        todoListViewModel.countCompletedTasks()
+                        it
                     )
                 }
             }
@@ -67,14 +67,6 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         binding.todoItems.adapter = todoAdapter
         binding.todoItems.layoutManager = LinearLayoutManager(requireContext())
         binding.todoItems.addItemDecoration(TodoItemsOffsetItemDecoration(bottomOffset = 16f.toInt()))
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                todoListViewModel.todoItems.collectLatest { list ->
-                    todoAdapter.submitList(list)
-                }
-            }
-        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -93,13 +85,7 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     private fun setupVisibilityToggleButton() {
         binding.visibilityToggleButton.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                todoListViewModel.setShowOnlyCompletedTasks(false)
-                todoListViewModel.filterTodoItems(false)
-            } else {
-                todoListViewModel.setShowOnlyCompletedTasks(true)
-                todoListViewModel.filterTodoItems(true)
-            }
+            todoListViewModel.setShowOnlyCompletedTasks(!isChecked)
         }
     }
 

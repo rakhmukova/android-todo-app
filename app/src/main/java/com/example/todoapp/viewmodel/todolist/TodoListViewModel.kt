@@ -13,17 +13,32 @@ class TodoListViewModel(private val repository: TodoItemsRepository) : ViewModel
     private val _todoItems: MutableStateFlow<List<TodoItem>> = MutableStateFlow(emptyList())
     private val _filteredTodoItems: MutableStateFlow<List<TodoItem>> = MutableStateFlow(emptyList())
     private val _showOnlyCompletedTasks: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    private val _completedTasksCount: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    val todoItems: StateFlow<List<TodoItem>> = _todoItems.asStateFlow()
     val filteredTodoItems: StateFlow<List<TodoItem>> = _filteredTodoItems.asStateFlow()
     val showOnlyCompletedTasks: StateFlow<Boolean> = _showOnlyCompletedTasks.asStateFlow()
+    val completedTasksCount: StateFlow<Int> = _completedTasksCount.asStateFlow()
 
     init {
-        loadTodoItems()
+        viewModelScope.launch {
+            repository.getAll().collect { todoItems ->
+                _todoItems.value = todoItems
+            }
+        }
+
+        viewModelScope.launch {
+            _todoItems.collect { todoItems ->
+                _todoItems.value = todoItems
+                filterTodoItems()
+                updateCompletedTasksCount()
+            }
+        }
     }
 
-    // TODO: fix
-    fun countCompletedTasks(): Int = _todoItems.value.count { it.isCompleted }
+    private fun updateCompletedTasksCount() {
+        val count = _todoItems.value.count { it.isCompleted }
+        _completedTasksCount.value = count
+    }
 
     private fun updateTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
@@ -33,25 +48,20 @@ class TodoListViewModel(private val repository: TodoItemsRepository) : ViewModel
 
     fun setShowOnlyCompletedTasks(value: Boolean) {
         _showOnlyCompletedTasks.value = value
+        filterTodoItems()
     }
 
     fun updateChecked(todoItem: TodoItem, isChecked: Boolean) {
         val modifiedItem = todoItem.copy(isCompleted = isChecked, modifiedAt = Date())
         updateTodoItem(modifiedItem)
-        filterTodoItems(_showOnlyCompletedTasks.value)
+        // TODO: fix
+        filterTodoItems()
+        updateCompletedTasksCount()
     }
 
-    private fun loadTodoItems() {
-        viewModelScope.launch {
-            repository.getAll().collect { todoItems ->
-                _todoItems.value = todoItems
-            }
-        }
-    }
-
-    fun filterTodoItems(showOnlyCompletedTasks: Boolean) {
+    private fun filterTodoItems() {
         val allItems = _todoItems.value
-        val filteredTodoItems = if (showOnlyCompletedTasks) {
+        val filteredTodoItems = if (showOnlyCompletedTasks.value) {
             allItems.filter { !it.isCompleted }
         } else {
             allItems
