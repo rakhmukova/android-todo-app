@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Theme.TodoApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:windowBackground">@color/back_primary</item>
+    <item name="android:popupBackground">@color/back_elevated</item>
+
+    <item name="android:textColorPrimary">@color/label_primary</item>
+    <item name="android:textColorSecondary">@color/label_secondary</item>
+    <item name="android:textColorTertiary">@color/label_tertiary</item>
+
+    <item name="colorControlNormal">@color/blue</item>
+    <item name="colorPrimary">@color/back_primary</item>
+    <item name="android:statusBarColor">@color/back_primary</item>
+    <item name="android:windowLightStatusBar">true</item>
+
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+
+    <item name="android:textCursorDrawable">@drawable/cursor</item>
+    <item name="colorAccent">@color/blue</item>
+  </style>
+</resources>

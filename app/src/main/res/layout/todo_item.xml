@@ -1,0 +1,67 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingTop="12dp"
+  android:paddingStart="16dp"
+  android:paddingBottom="12dp"
+  android:paddingEnd="16dp">
+
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/is_completed_check_box"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:button="@drawable/checkbox_task_done"
+    android:gravity="top"
+    app:tint="@color/white"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <ImageView
+    android:id="@+id/priority_icon"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
+    app:layout_constraintStart_toEndOf="@+id/is_completed_check_box"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="4dp"
+    android:contentDescription="@string/priority"
+    android:visibility="gone" />
+
+  <TextView
+    android:id="@+id/task_text"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:textColor="@color/label_primary"
+    android:textSize="19sp"
+    android:maxLines="3"
+    android:ellipsize="end"
+    android:layout_marginStart="4dp"
+    android:includeFontPadding="false"
+    app:layout_constraintStart_toEndOf="@+id/priority_icon"
+    app:layout_constraintEnd_toStartOf="@+id/info_image"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/task_deadline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/label_secondary"
+    android:layout_marginTop="8dp"
+    android:textSize="14sp"
+    app:layout_constraintStart_toStartOf="@+id/task_text"
+    app:layout_constraintTop_toBottomOf="@id/task_text"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
+  <ImageView
+    android:id="@+id/info_image"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/info_outline"
+    app:tint="@color/label_tertiary"
+    app:layout_constraintStart_toEndOf="@+id/task_text"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:contentDescription="@string/info"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

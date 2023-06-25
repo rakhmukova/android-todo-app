@@ -1,0 +1,28 @@
+<resources>
+  <string name="app_name">TodoApp</string>
+
+  <string name="action_settings">Настройки</string>
+  <string name="todo_items_fragment_label">Мои дела</string>
+  <string name="add_item_fragment_label">Дело</string>
+
+  <string name="task">Задача</string>
+  <string name="my_tasks">Мои задачи</string>
+  <string name="completed_tasks">Выполнено — %1$d</string>
+  <string name="new_task">Новая задача</string>
+
+  <string name="save_task">Сохранить</string>
+  <string name="cancel_task">Отменить</string>
+  <string name="delete_task">Удалить</string>
+  <string name="close_task">Закрыть</string>
+
+  <string name="initial_description">Что надо сделать?</string>
+
+  <string name="priority">Приоритет</string>
+  <string name="no_priority">Нет</string>
+  <string name="low_priority">Низкий</string>
+  <string name="high_priority">Высокий</string>
+
+  <string name="deadline">Сделать до</string>
+  <string name="no_date">Дата</string>
+  <string name="info">Инфо</string>
+</resources>
