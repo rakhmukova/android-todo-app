@@ -17,6 +17,9 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
 import com.example.todoapp.ui.additem.AddTodoItemFragment
+import com.example.todoapp.ui.todolist.recyclerview.TodoItemChangeCallbacks
+import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
+import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoration
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

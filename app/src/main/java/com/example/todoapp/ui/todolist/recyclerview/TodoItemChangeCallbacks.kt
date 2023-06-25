@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.todolist
+package com.example.todoapp.ui.todolist.recyclerview
 
 import com.example.todoapp.data.model.TodoItem
 
