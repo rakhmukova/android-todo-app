@@ -58,7 +58,6 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    // TODO: fix
     private fun setupDescription() {
         binding.taskDescription.addTextChangedListener {
             addTodoItemViewModel.updateDescription(it?.toString() ?: "")
@@ -70,7 +69,7 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 addTodoItemViewModel.todoItem.collectLatest { todoItem ->
                     binding.importanceValue.text = PriorityMapper.mapToString(todoItem.priority)
-                    binding.taskDescription.setText(todoItem.text)
+                    binding.taskDescription.setTextKeepState(todoItem.text)
                     binding.deadlineDate.text = DateParser.parse(todoItem.deadline)
                 }
             }
