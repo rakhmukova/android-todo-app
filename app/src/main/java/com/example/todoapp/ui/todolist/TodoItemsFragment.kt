@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.TodoItem
@@ -32,14 +33,20 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         (requireActivity().application as TodoApp).todoListViewModel
     }
 
-    private lateinit var binding: FragmentTodoItemsBinding
+    private var _binding: FragmentTodoItemsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTodoItemsBinding.inflate(inflater, container, false)
+        _binding = FragmentTodoItemsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

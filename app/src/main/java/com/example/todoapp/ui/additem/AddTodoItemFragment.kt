@@ -33,14 +33,20 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
         (requireActivity().application as TodoApp).addTodoItemViewModel
     }
 
-    private lateinit var binding: FragmentAddItemBinding
+    private var _binding: FragmentAddItemBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddItemBinding.inflate(inflater, container, false)
+        _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
