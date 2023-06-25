@@ -14,21 +14,21 @@ class TodoItemViewHolder(
     private val callbacks: TodoItemChangeCallbacks
     ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(todoItem: TodoItem){
+    fun onBind(todoItem: TodoItem, position: Int){
         setTaskDeadline(todoItem)
         setTaskDescription(todoItem)
         setPriorityIcon(todoItem)
-        setCheckBox(todoItem)
+        setCheckBox(todoItem, position)
     }
 
     private fun setTaskDeadline(todoItem: TodoItem) {
         binding.taskDeadline.text = DateParser.parse(todoItem.deadline)
     }
 
-    private fun setCheckBox(todoItem: TodoItem) {
+    private fun setCheckBox(todoItem: TodoItem, position: Int) {
         binding.isCompletedCheckBox.isChecked = todoItem.isCompleted
         binding.isCompletedCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            callbacks.onTodoItemCheckedChanged(todoItem, isChecked)
+            callbacks.onTodoItemCheckedChanged(todoItem, isChecked, position)
         }
     }
 

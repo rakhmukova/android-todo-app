@@ -94,7 +94,9 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         findNavController().navigate(R.id.action_TodoItemsFragment_to_AddItemFragment, args)
     }
 
-    override fun onTodoItemCheckedChanged(todoItem: TodoItem, isChecked: Boolean) {
+    override fun onTodoItemCheckedChanged(todoItem: TodoItem, isChecked: Boolean, position: Int) {
         todoListViewModel.updateChecked(todoItem, isChecked)
+        // TODO: fix when visibility on / off
+        // todoAdapter.notifyItemChanged(position)
     }
 }

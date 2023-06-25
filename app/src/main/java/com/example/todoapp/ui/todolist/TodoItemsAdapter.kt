@@ -18,7 +18,7 @@ class TodoItemsAdapter(
 
     override fun onBindViewHolder(holder: TodoItemViewHolder, position: Int) {
         val todoItem = getItem(position)
-        holder.onBind(todoItem)
+        holder.onBind(todoItem, position)
     }
 
     override fun getItemId(position: Int): Long {
