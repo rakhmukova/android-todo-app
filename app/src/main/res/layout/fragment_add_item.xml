@@ -117,7 +117,7 @@
         app:layout_constraintTop_toBottomOf="@id/importance_value" />
 
       <TextView
-        android:id="@+id/do_up_title"
+        android:id="@+id/deadline_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/deadline"
@@ -139,7 +139,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/do_up_title"
+        app:layout_constraintLeft_toRightOf="@id/deadline_title"
         app:layout_constraintTop_toBottomOf="@id/below_importance_separator" />
 
       <TextView
@@ -150,7 +150,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/no_date"
-        app:layout_constraintTop_toBottomOf="@id/do_up_title" />
+        app:layout_constraintTop_toBottomOf="@id/deadline_title" />
 
       <View
         android:id="@+id/below_do_up_separator"

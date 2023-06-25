@@ -134,29 +134,37 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
         }
     }
 
+    private fun openDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), R.style.DatePickerStyle,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedCalendar = Calendar.getInstance()
+                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+                val selectedDate = selectedCalendar.time
+                addTodoItemViewModel.updateDeadline(selectedDate)
+            }, year, month, day
+        )
+
+        datePickerDialog.setOnCancelListener {
+            binding.switchButton.isChecked = false
+        }
+
+        datePickerDialog.show()
+    }
+
     private fun setupDatePicker() {
+        binding.deadlineDate.setOnClickListener {
+            openDatePicker()
+        }
+
         binding.switchButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val calendar = Calendar.getInstance()
-                val year = calendar.get(Calendar.YEAR)
-                val month = calendar.get(Calendar.MONTH)
-                val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-                val datePickerDialog = DatePickerDialog(
-                    requireContext(), R.style.DatePickerStyle,
-                    { _, selectedYear, selectedMonth, selectedDay ->
-                        val selectedCalendar = Calendar.getInstance()
-                        selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
-                        val selectedDate = selectedCalendar.time
-                        addTodoItemViewModel.updateDeadline(selectedDate)
-                    }, year, month, day
-                )
-
-                datePickerDialog.setOnCancelListener {
-                    binding.switchButton.isChecked = false
-                }
-
-                datePickerDialog.show()
+                openDatePicker()
             } else {
                 addTodoItemViewModel.updateDeadline(null)
             }
