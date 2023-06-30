@@ -19,8 +19,8 @@
   <fragment
     android:id="@+id/AddItemFragment"
     android:label="@string/add_item_fragment_label"
-    android:name="com.example.todoapp.ui.additem.AddTodoItemFragment"
-    tools:layout="@layout/fragment_add_item">
+    android:name="com.example.todoapp.ui.edititem.EditTodoItemFragment"
+    tools:layout="@layout/fragment_edit_item">
 
     <argument
       android:name="todoItemId"

@@ -1,23 +1,23 @@
-package com.example.todoapp.viewmodel.todolist
+package com.example.todoapp.viewmodel.edititem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.todoapp.data.repository.TodoItemRepository
 
 @Suppress("UNCHECKED_CAST")
-class TodoListViewModelFactory(private val repository: TodoItemRepository):
+class EditTodoItemViewModelFactory(private val repository: TodoItemRepository):
     ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>): T {
-        return TodoListViewModel(repository) as T
+        return EditTodoItemViewModel(repository) as T
     }
 
     companion object {
-        private var instance: TodoListViewModelFactory? = null
+        private var instance: EditTodoItemViewModelFactory? = null
 
         fun getInstance(
             repository: TodoItemRepository
-        ): TodoListViewModelFactory {
-            return instance ?: TodoListViewModelFactory(repository).also {
+        ): EditTodoItemViewModelFactory {
+            return instance ?: EditTodoItemViewModelFactory(repository).also {
                 instance = it
             }
         }
