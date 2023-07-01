@@ -7,6 +7,7 @@ import com.example.todoapp.viewmodel.edititem.EditTodoItemViewModel
 import com.example.todoapp.viewmodel.edititem.EditTodoItemViewModelFactory
 import com.example.todoapp.viewmodel.todolist.TodoListViewModel
 import com.example.todoapp.viewmodel.todolist.TodoListViewModelFactory
+import com.example.todoapp.workers.WorkerProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -27,6 +28,7 @@ class TodoApp : Application() {
             .create(EditTodoItemViewModel::class.java)
 
         setupConnectivityMonitoring(todoItemRepository)
+        WorkerProvider.setupWorkers(applicationContext)
     }
 
     private fun setupConnectivityMonitoring(todoItemRepository: TodoItemRepository) {
