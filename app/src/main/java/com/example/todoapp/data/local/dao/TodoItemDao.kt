@@ -46,7 +46,14 @@ interface TodoItemDao {
         val itemsToDelete = mutableListOf<TodoItemEntity>()
 
         todoItems.forEach { remoteItem ->
-            itemsToInsert.add(remoteItem)
+            val existingItem = existingTodoItems.find { it.id == remoteItem.id }
+            if (existingItem != null) {
+                if (remoteItem.modifiedAt!! > existingItem.modifiedAt!!){
+                    itemsToInsert.add(remoteItem)
+                }
+            } else {
+                itemsToInsert.add(remoteItem)
+            }
         }
 
         existingTodoItems.forEach { localItem ->
