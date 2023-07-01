@@ -1,6 +1,5 @@
 package com.example.todoapp.viewmodel.edititem
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.model.Priority
@@ -43,18 +42,13 @@ class EditTodoItemViewModel(private val repository: TodoItemRepository) : ViewMo
     fun saveTodoItem() {
         val modifiedAt = Date()
         val currentTodoItem = _todoItem.value.copy(modifiedAt = modifiedAt)
-        Log.println(Log.INFO, "bla", currentTodoItem.deadline.toString())
-        
-        Log.d(TAG, "saveTodoItem: ${_isExisting}")
         
         if (_isExisting == true) {
             viewModelScope.launch {
                 repository.updateTodoItem(currentTodoItem)
             }
         } else {
-            Log.d(TAG, "saveTodoItem: add")
             viewModelScope.launch {
-                Log.d(TAG, "saveTodoItem: add vms")
                 repository.addTodoItem(currentTodoItem.copy(createdAt = modifiedAt))
             }
         }
@@ -86,9 +80,5 @@ class EditTodoItemViewModel(private val repository: TodoItemRepository) : ViewMo
 
     private fun getDefaultTodoItem(): TodoItem {
         return TodoItem(id = UUID.randomUUID().toString(), text = "", Priority.COMMON)
-    }
-    
-    companion object {
-        private const val TAG = "EditTodoItemViewModel"
     }
 }
