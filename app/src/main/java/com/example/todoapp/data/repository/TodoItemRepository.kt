@@ -1,7 +1,6 @@
 package com.example.todoapp.data.repository
 
 import android.content.Context
-import android.util.Log
 import com.example.todoapp.data.DataState
 import com.example.todoapp.data.remote.RetrofitProvider
 import com.example.todoapp.data.local.AppDatabase
@@ -43,7 +42,7 @@ class TodoItemRepository(
     val updateTodoItemState: StateFlow<DataState<Unit>>
         get() = _updateTodoItemState
 
-    suspend fun loadData(): Flow<DataState<Unit>> = flow {
+    fun loadData(): Flow<DataState<Unit>> = flow {
         try {
             emit(DataState.Loading())
             val items = remoteDataSource.getTodoItems()
@@ -110,8 +109,6 @@ class TodoItemRepository(
     }
 
     companion object {
-        private const val TAG = "TodoItemRepository"
-
         fun create(applicationContext: Context): TodoItemRepository {
             val retrofit = RetrofitProvider.create()
             val apiService = retrofit.create(TodoApiService::class.java)
