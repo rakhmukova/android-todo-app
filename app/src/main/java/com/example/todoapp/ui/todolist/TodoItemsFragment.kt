@@ -87,19 +87,8 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                todoListViewModel.todoItems.collectLatest { dataResult ->
-                    when (dataResult) {
-                        is DataState.Success -> {
-                            todoAdapter.submitList(dataResult.data)
-                        }
-                        is DataState.Loading -> {
-                            // todo: animate elements loading
-                        }
-                        is DataState.Error -> {
-                            todoAdapter.submitList(dataResult.data)
-                            dataResult.throwable?.message?.let { displaySnackbar(it) }
-                        }
-                    }
+                todoListViewModel.todoItems.collectLatest {
+                    todoAdapter.submitList(it)
                 }
             }
         }

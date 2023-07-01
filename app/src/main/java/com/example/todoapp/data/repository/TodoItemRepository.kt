@@ -1,6 +1,7 @@
 package com.example.todoapp.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.todoapp.data.DataState
 import com.example.todoapp.data.remote.RetrofitProvider
 import com.example.todoapp.data.local.AppDatabase
@@ -42,12 +43,15 @@ class TodoItemRepository(
     val updateTodoItemState: StateFlow<DataState<Unit>>
         get() = _updateTodoItemState
 
-    suspend fun loadData() = withContext(Dispatchers.IO) {
+    suspend fun loadData(): Flow<DataState<Unit>> = flow {
         try {
+            emit(DataState.Loading())
             val items = remoteDataSource.getTodoItems()
             localDataSource.updateTodoItems(items)
-            _syncWithBackend.value = true;
+            _syncWithBackend.value = true
+            emit(DataState.Success(Unit))
         } catch (e: Throwable) {
+            emit(DataState.Error(e))
             _syncWithBackend.value = false
         }
     }
@@ -61,16 +65,6 @@ class TodoItemRepository(
             _syncWithBackend.value = true
         } catch (e: Exception) {
             _syncWithBackend.value = false
-        }
-    }
-
-    suspend fun getTodoItems(): Flow<DataState<List<TodoItem>>> = flow {
-        try {
-            emit(DataState.Loading())
-            val todoItems = remoteDataSource.getTodoItems()
-            emit(DataState.Success(todoItems))
-        } catch (e: Throwable) {
-            emit(DataState.Error(e))
         }
     }
 
