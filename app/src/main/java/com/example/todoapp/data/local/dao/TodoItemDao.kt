@@ -43,7 +43,6 @@ interface TodoItemDao {
         val existingTodoItems = getTodoItems(todoItems.map { it.id })
 
         val itemsToInsert = mutableListOf<TodoItemEntity>()
-        val itemsToDelete = mutableListOf<TodoItemEntity>()
 
         todoItems.forEach { remoteItem ->
             val existingItem = existingTodoItems.find { it.id == remoteItem.id }
@@ -56,23 +55,8 @@ interface TodoItemDao {
             }
         }
 
-        existingTodoItems.forEach { localItem ->
-            val item = todoItems.find { it.id == localItem.id }
-            if (item == null){
-                itemsToDelete.add(localItem)
-            }
-        }
-
         if (itemsToInsert.isNotEmpty()) {
             insertTodoItems(itemsToInsert)
         }
-
-        if (itemsToDelete.isNotEmpty()) {
-            deleteTodoItems(itemsToDelete.map { it.id })
-        }
-    }
-
-    companion object {
-        private const val TAG = "TodoItemDao"
     }
 }
