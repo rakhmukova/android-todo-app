@@ -1,6 +1,5 @@
 package com.example.todoapp.data.local.dao
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -47,12 +46,10 @@ interface TodoItemDao {
         val itemsToDelete = mutableListOf<TodoItemEntity>()
 
         todoItems.forEach { remoteItem ->
-            Log.d(TAG, "todoItems: 1")
             itemsToInsert.add(remoteItem)
         }
 
         existingTodoItems.forEach { localItem ->
-            Log.d(TAG, "existingTodoItems: 2")
             val item = todoItems.find { it.id == localItem.id }
             if (item == null){
                 itemsToDelete.add(localItem)
@@ -60,13 +57,10 @@ interface TodoItemDao {
         }
 
         if (itemsToInsert.isNotEmpty()) {
-            Log.d(TAG, "itemsToInsert: ${itemsToInsert.size}")
             insertTodoItems(itemsToInsert)
         }
 
-        Log.d(TAG, "itemsToDelete: ${itemsToDelete.size}")
         if (itemsToDelete.isNotEmpty()) {
-            Log.d(TAG, "itemsToDelete: ${itemsToDelete.size}")
             deleteTodoItems(itemsToDelete.map { it.id })
         }
     }
