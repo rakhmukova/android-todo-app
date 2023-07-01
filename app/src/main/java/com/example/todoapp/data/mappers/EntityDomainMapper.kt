@@ -13,7 +13,8 @@ class EntityDomainMapper {
                 deadline = todoItemEntity.deadline,
                 isCompleted = todoItemEntity.isCompleted,
                 createdAt = todoItemEntity.createdAt,
-                modifiedAt = todoItemEntity.modifiedAt
+                modifiedAt = todoItemEntity.modifiedAt,
+                isDeleted = todoItemEntity.isDeleted
             )
         }
 
@@ -25,7 +26,8 @@ class EntityDomainMapper {
                 deadline = todoItem.deadline,
                 isCompleted = todoItem.isCompleted,
                 createdAt = todoItem.createdAt,
-                modifiedAt = todoItem.modifiedAt
+                modifiedAt = todoItem.modifiedAt,
+                isDeleted = todoItem.isDeleted
             )
         }
     }

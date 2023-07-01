@@ -10,7 +10,7 @@ import com.example.todoapp.data.local.dao.TodoItemDao
 
 private const val DB_NAME = "todo-database"
 
-@Database(entities = [TodoItemEntity::class], version = 1)
+@Database(entities = [TodoItemEntity::class], version = 3)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun todoItemDao(): TodoItemDao
@@ -21,7 +21,10 @@ abstract class AppDatabase : RoomDatabase() {
                 context,
                 AppDatabase::class.java,
                 DB_NAME
-            ).build()
+            )
+                // drop database when changing schema
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

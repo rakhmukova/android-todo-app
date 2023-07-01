@@ -23,6 +23,9 @@ interface TodoItemDao {
     @Query("DELETE FROM todo_items WHERE id = :itemId")
     suspend fun deleteTodoItem(itemId: String)
 
+    @Query("UPDATE todo_items SET is_deleted = 1 WHERE id = :itemId")
+    suspend fun markItemDeleted(itemId: String)
+
     @Update
     suspend fun updateTodoItem(todoItem: TodoItemEntity)
 

@@ -1,19 +1,24 @@
 package com.example.todoapp.data.local
 
 import com.example.todoapp.data.local.dao.TodoItemDao
+import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.data.mappers.EntityDomainMapper
 import com.example.todoapp.data.model.TodoItem
 import kotlinx.coroutines.flow.map
 
 class LocalDataSource(private val todoItemDao: TodoItemDao) {
 
-    fun getTodoItemsFlow() = todoItemDao.getTodoItemsFlow().map { list ->
-        list.map {  EntityDomainMapper.toDomainModel(it) }
+    private fun List<TodoItemEntity>.processItems(): List<TodoItem> {
+        return this
+            .map { EntityDomainMapper.toDomainModel(it) }
+            .filter { ! it.isDeleted }
     }
 
-    suspend fun getTodoItems() = todoItemDao.getTodoItems().map {
-        EntityDomainMapper.toDomainModel(it)
+    fun getTodoItemsFlow() = todoItemDao.getTodoItemsFlow().map { list ->
+        list.processItems()
     }
+
+    suspend fun getTodoItems() = todoItemDao.getTodoItems().processItems()
 
     suspend fun findById(itemId: String): TodoItem? {
         return todoItemDao.findById(itemId)?.let { EntityDomainMapper.toDomainModel(it) }
@@ -34,6 +39,6 @@ class LocalDataSource(private val todoItemDao: TodoItemDao) {
     }
 
     suspend fun removeTodoItem(itemId: String) {
-        todoItemDao.deleteTodoItem(itemId)
+        todoItemDao.markItemDeleted(itemId)
     }
 }
