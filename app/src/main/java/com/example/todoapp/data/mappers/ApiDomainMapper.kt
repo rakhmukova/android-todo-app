@@ -1,5 +1,6 @@
 package com.example.todoapp.data.mappers
 
+import com.example.todoapp.data.DeviceIdManager
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.model.ApiTodoItem
@@ -29,8 +30,7 @@ class ApiDomainMapper {
                 createdAt = DateConverter.dateToLong(todoItem.createdAt),
                 modifiedAt = DateConverter.dateToLong(todoItem.createdAt),
                 color = "#FFFFFF",
-                // todo: store device unique id
-                lastUpdatedBy = ""
+                lastUpdatedBy = DeviceIdManager.getDeviceId()
             )
         }
 

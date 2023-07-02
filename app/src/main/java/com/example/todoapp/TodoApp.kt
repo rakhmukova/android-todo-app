@@ -1,6 +1,7 @@
 package com.example.todoapp
 
 import android.app.Application
+import com.example.todoapp.data.DeviceIdManager
 import com.example.todoapp.data.remote.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
 import com.example.todoapp.ui.edititem.EditTodoItemViewModel
@@ -29,6 +30,7 @@ class TodoApp : Application() {
 
         setupConnectivityMonitoring(todoItemRepository)
         WorkerProvider.setupWorkers(applicationContext)
+        DeviceIdManager.loadDeviceId(applicationContext)
     }
 
     private fun setupConnectivityMonitoring(todoItemRepository: TodoItemRepository) {
