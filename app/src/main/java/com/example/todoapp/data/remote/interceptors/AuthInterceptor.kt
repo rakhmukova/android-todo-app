@@ -1,4 +1,4 @@
-package com.example.todoapp.data.remote
+package com.example.todoapp.data.remote.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response
