@@ -36,7 +36,7 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
                     if (response.isSuccessful && response.code() in 200..299) {
                         callback.onResponse(call, response)
                     } else {
-                        callback.onFailure(call, HttpException(response))
+                        callback.onFailure(call, convert(HttpException(response)))
                     }
                 }
 
