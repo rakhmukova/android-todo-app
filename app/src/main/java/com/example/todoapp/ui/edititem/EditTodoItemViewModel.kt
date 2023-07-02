@@ -1,4 +1,4 @@
-package com.example.todoapp.viewmodel.edititem
+package com.example.todoapp.ui.edititem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

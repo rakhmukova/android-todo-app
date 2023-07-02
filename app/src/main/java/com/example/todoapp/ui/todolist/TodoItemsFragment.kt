@@ -1,8 +1,6 @@
 package com.example.todoapp.ui.todolist
 
-import com.example.todoapp.viewmodel.todolist.TodoListViewModel
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.DataState
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
 import com.example.todoapp.ui.edititem.EditTodoItemFragment

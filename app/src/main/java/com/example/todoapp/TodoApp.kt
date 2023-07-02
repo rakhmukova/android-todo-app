@@ -3,10 +3,10 @@ package com.example.todoapp
 import android.app.Application
 import com.example.todoapp.data.remote.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
-import com.example.todoapp.viewmodel.edititem.EditTodoItemViewModel
-import com.example.todoapp.viewmodel.edititem.EditTodoItemViewModelFactory
-import com.example.todoapp.viewmodel.todolist.TodoListViewModel
-import com.example.todoapp.viewmodel.todolist.TodoListViewModelFactory
+import com.example.todoapp.ui.edititem.EditTodoItemViewModel
+import com.example.todoapp.ui.edititem.EditTodoItemViewModelFactory
+import com.example.todoapp.ui.todolist.TodoListViewModel
+import com.example.todoapp.ui.todolist.TodoListViewModelFactory
 import com.example.todoapp.workers.WorkerProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

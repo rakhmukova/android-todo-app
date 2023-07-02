@@ -23,7 +23,6 @@ import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentEditItemBinding
 import com.example.todoapp.util.DateParser
 import com.example.todoapp.util.PriorityMapper
-import com.example.todoapp.viewmodel.edititem.EditTodoItemViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
