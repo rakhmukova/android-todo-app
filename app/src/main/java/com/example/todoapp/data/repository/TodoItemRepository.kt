@@ -13,14 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class TodoItemRepository(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
 ) {
-    // todo: on syncWithBackend = false schedule worker to start synchronization
     private val _syncWithBackend = MutableStateFlow(false)
     val syncWithBackend: Flow<Boolean>
         get() = _syncWithBackend
@@ -29,7 +27,6 @@ class TodoItemRepository(
     val todoItems: Flow<List<TodoItem>>
         get() = _todoItems
 
-    // todo: observe them in ui and display snackbars with corresponding errors
     private val _addTodoItemState = MutableStateFlow<DataState<Unit>>(DataState.Loading())
     val addTodoItemState: StateFlow<DataState<Unit>>
         get() = _addTodoItemState
@@ -42,15 +39,12 @@ class TodoItemRepository(
     val updateTodoItemState: StateFlow<DataState<Unit>>
         get() = _updateTodoItemState
 
-    fun loadData(): Flow<DataState<Unit>> = flow {
+    suspend fun loadData() = withContext(Dispatchers.IO){
         try {
-            emit(DataState.Loading())
             val items = remoteDataSource.getTodoItems()
             localDataSource.updateTodoItems(items)
             _syncWithBackend.value = true
-            emit(DataState.Success(Unit))
         } catch (e: Throwable) {
-            emit(DataState.Error(e))
             _syncWithBackend.value = false
         }
     }
@@ -74,8 +68,7 @@ class TodoItemRepository(
             _addTodoItemState.value = DataState.Success(Unit)
         } catch (e: ErrorConverterCallAdapterFactory.NotSynchronizedDataException){
             // todo: handle wrong revision - syncTodoItems
-        }
-        catch (e: Throwable) {
+        } catch (e: Throwable) {
             _addTodoItemState.value = DataState.Error(e)
         }
     }

@@ -25,4 +25,8 @@
   <string name="deadline">Сделать до</string>
   <string name="no_date">Дата</string>
   <string name="info">Инфо</string>
+
+  <string name="upload_error">Не удалось загрузить данные с сервера</string>
+  <string name="update_error">Ваши изменения будут загружены,
+    как только вы снова будете подключены к интернету</string>
 </resources>

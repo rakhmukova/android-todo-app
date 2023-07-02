@@ -1,7 +1,6 @@
 package com.example.todoapp.ui.todolist
 
 import androidx.lifecycle.*
-import com.example.todoapp.data.DataState
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.repository.TodoItemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +10,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class TodoListViewModel(private val repository: TodoItemRepository) : ViewModel() {
-    // todo: display snackbar
-    private val _syncState: MutableStateFlow<DataState<Unit>> =
-        MutableStateFlow(DataState.Loading())
     private val _showOnlyCompletedTasks: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _completedTasksCount: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -31,9 +27,7 @@ class TodoListViewModel(private val repository: TodoItemRepository) : ViewModel(
 
     fun loadTodoItems() {
         viewModelScope.launch {
-            repository.loadData().collect {
-                _syncState.value = it
-            }
+            repository.loadData()
         }
     }
 

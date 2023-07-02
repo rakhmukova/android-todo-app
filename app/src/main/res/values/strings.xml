@@ -23,4 +23,7 @@
   <string name="deadline">Deadline</string>
   <string name="no_date"> </string>
   <string name="info">info</string>
+
+  <string name="upload_error">Could not load data from server</string>
+  <string name="update_error">Your changes will be uploaded as soon as you\'re back online</string>
 </resources>

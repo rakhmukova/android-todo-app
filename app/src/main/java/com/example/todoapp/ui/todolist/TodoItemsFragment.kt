@@ -19,7 +19,6 @@ import com.example.todoapp.ui.edititem.EditTodoItemFragment
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemChangeCallbacks
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoration
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -88,15 +87,6 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
                     todoAdapter.submitList(it)
                 }
             }
-        }
-    }
-
-    private fun displaySnackbar(message: String) {
-        view?.let {
-            Snackbar
-                .make(it, message, Snackbar.LENGTH_LONG)
-                .setAction("Retry") { todoListViewModel.loadTodoItems() }
-                    .show()
         }
     }
 

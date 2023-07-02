@@ -18,7 +18,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.DataState
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentEditItemBinding
 import com.example.todoapp.util.DateParser
@@ -71,28 +70,6 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
                     binding.importanceValue.text = PriorityMapper.mapToString(todoItem.priority)
                     binding.taskDescription.setTextKeepState(todoItem.text)
                     binding.deadlineDate.text = DateParser.parse(todoItem.deadline)
-                }
-            }
-
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                editTodoItemViewModel.addTodoItemState.collectLatest {
-                    when(it){
-                        is DataState.Error -> {
-                            // todo: display error snackbar
-                        }
-                        else -> {}
-                    }
-                }
-            }
-
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                editTodoItemViewModel.removeTodoItemState.collectLatest {
-                    when(it){
-                        is DataState.Error -> {
-                            // todo: display error snackbar
-                        }
-                        else -> {}
-                    }
                 }
             }
         }

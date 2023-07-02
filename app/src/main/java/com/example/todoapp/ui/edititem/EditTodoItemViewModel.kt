@@ -16,9 +16,6 @@ class EditTodoItemViewModel(private val repository: TodoItemRepository) : ViewMo
     private val _todoItem = MutableStateFlow(getDefaultTodoItem())
     val todoItem: StateFlow<TodoItem> = _todoItem.asStateFlow()
 
-    val addTodoItemState = repository.addTodoItemState
-    val removeTodoItemState = repository.removeTodoItemState
-
     private var _isExisting: Boolean? = null
 
     fun updateDescription(description: String) {

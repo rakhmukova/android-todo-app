@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.todoapp.data.DeviceIdManager
 import com.example.todoapp.data.remote.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
+import com.example.todoapp.ui.main.MainViewModel
+import com.example.todoapp.ui.main.MainViewModelFactory
 import com.example.todoapp.ui.edititem.EditTodoItemViewModel
 import com.example.todoapp.ui.edititem.EditTodoItemViewModelFactory
 import com.example.todoapp.ui.todolist.TodoListViewModel
@@ -16,6 +18,7 @@ class TodoApp : Application() {
 
     lateinit var todoListViewModel: TodoListViewModel
     lateinit var editTodoItemViewModel: EditTodoItemViewModel
+    lateinit var mainViewModel: MainViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -27,6 +30,9 @@ class TodoApp : Application() {
 
         editTodoItemViewModel = EditTodoItemViewModelFactory.getInstance(todoItemRepository)
             .create(EditTodoItemViewModel::class.java)
+
+        mainViewModel = MainViewModelFactory.getInstance(todoItemRepository)
+            .create(MainViewModel::class.java)
 
         setupConnectivityMonitoring(todoItemRepository)
         WorkerProvider.setupWorkers(applicationContext)
