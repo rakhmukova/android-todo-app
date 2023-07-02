@@ -16,19 +16,14 @@ class RemoteDataSource(private val apiService: TodoApiService) {
         val body = response.body()
         if (body != null){
             _revision = body.revision
-
-            return body.list.map {
-                ApiDomainMapper.toDomainModel(it)
-            }
+            return body.list.map(ApiDomainMapper::toDomainModel)
         }
 
         return emptyList()
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        apiService.updateTodoItems(_revision, TodoListRequest(todoItems.map {
-            ApiDomainMapper.toApiModel(it)
-        }))
+        apiService.updateTodoItems(_revision, TodoListRequest(todoItems.map(ApiDomainMapper::toApiModel)))
     }
 
     suspend fun addTodoItem(todoItem: TodoItem): Response<TodoItemResponse> {

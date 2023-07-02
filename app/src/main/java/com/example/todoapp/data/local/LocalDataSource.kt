@@ -8,20 +8,20 @@ import kotlinx.coroutines.flow.map
 
 class LocalDataSource(private val todoItemDao: TodoItemDao) {
 
-    private fun List<TodoItemEntity>.processItems(): List<TodoItem> {
+    private fun List<TodoItemEntity>.processEntities(): List<TodoItem> {
         return this
-            .map { EntityDomainMapper.toDomainModel(it) }
+            .map(EntityDomainMapper::toDomainModel)
             .filter { ! it.isDeleted }
     }
 
-    fun getTodoItemsFlow() = todoItemDao.getTodoItemsFlow().map { list ->
-        list.processItems()
+    fun getTodoItemsFlow() = todoItemDao.getTodoItemsFlow().map {
+        it.processEntities()
     }
 
-    suspend fun getTodoItems() = todoItemDao.getTodoItems().processItems()
+    suspend fun getTodoItems() = todoItemDao.getTodoItems().processEntities()
 
     suspend fun findById(itemId: String): TodoItem? {
-        return todoItemDao.findById(itemId)?.let { EntityDomainMapper.toDomainModel(it) }
+        return todoItemDao.findById(itemId)?.let(EntityDomainMapper::toDomainModel)
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
