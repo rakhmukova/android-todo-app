@@ -6,6 +6,7 @@ import com.example.todoapp.data.repository.TodoItemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -20,8 +21,12 @@ class TodoListViewModel(private val repository: TodoItemRepository) : ViewModel(
         get() = _completedTasksCount.asStateFlow()
 
     init {
+        loadTodoItems()
+
         viewModelScope.launch {
-            repository.loadData()
+            todoItems.collectLatest { items ->
+                _completedTasksCount.value = items.count { it.isCompleted }
+            }
         }
     }
 
