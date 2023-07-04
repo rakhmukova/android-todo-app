@@ -1,6 +1,5 @@
 package com.example.todoapp.ui.todolist
 
-import com.example.todoapp.viewmodel.todolist.TodoListViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
-import com.example.todoapp.ui.additem.AddTodoItemFragment
+import com.example.todoapp.ui.edititem.EditTodoItemFragment
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemChangeCallbacks
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoration
@@ -77,10 +76,15 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         binding.todoItems.layoutManager = LinearLayoutManager(requireContext())
         binding.todoItems.addItemDecoration(TodoItemsOffsetItemDecoration(bottomOffset = 16f.toInt()))
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            todoListViewModel.loadTodoItems()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                todoListViewModel.filteredTodoItems.collectLatest { filteredList ->
-                    todoAdapter.submitList(filteredList)
+                todoListViewModel.todoItems.collectLatest {
+                    todoAdapter.submitList(it)
                 }
             }
         }
@@ -94,12 +98,12 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     private fun setupVisibilityToggleButton() {
         binding.visibilityToggleButton.setOnCheckedChangeListener { _, isChecked ->
-            todoListViewModel.setShowOnlyCompletedTasks(!isChecked)
+//            todoListViewModel.setShowOnlyCompletedTasks(!isChecked)
         }
     }
 
     override fun onTodoItemClicked(todoItem: TodoItem) {
-        val args = bundleOf(AddTodoItemFragment.ARG_TODO_ITEM_ID to todoItem.id)
+        val args = bundleOf(EditTodoItemFragment.ARG_TODO_ITEM_ID to todoItem.id)
         findNavController().navigate(R.id.action_TodoItemsFragment_to_AddItemFragment, args)
     }
 
@@ -107,5 +111,9 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         todoListViewModel.updateChecked(todoItem, isChecked)
         // TODO: fix when visibility on / off
         // todoAdapter.notifyItemChanged(position)
+    }
+
+    companion object {
+        private const val TAG = "TodoItemsFragment"
     }
 }

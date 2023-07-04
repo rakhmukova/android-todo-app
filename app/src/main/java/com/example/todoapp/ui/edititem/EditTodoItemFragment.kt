@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.additem
+package com.example.todoapp.ui.edititem
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -19,28 +19,27 @@ import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.Priority
-import com.example.todoapp.databinding.FragmentAddItemBinding
+import com.example.todoapp.databinding.FragmentEditItemBinding
 import com.example.todoapp.util.DateParser
 import com.example.todoapp.util.PriorityMapper
-import com.example.todoapp.viewmodel.additem.AddTodoItemViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
+class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
-    private val addTodoItemViewModel: AddTodoItemViewModel by lazy {
-        (requireActivity().application as TodoApp).addTodoItemViewModel
+    private val editTodoItemViewModel: EditTodoItemViewModel by lazy {
+        (requireActivity().application as TodoApp).editTodoItemViewModel
     }
 
-    private var _binding: FragmentAddItemBinding? = null
+    private var _binding: FragmentEditItemBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddItemBinding.inflate(inflater, container, false)
+        _binding = FragmentEditItemBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,14 +59,14 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
 
     private fun setupDescription() {
         binding.taskDescription.addTextChangedListener {
-            addTodoItemViewModel.updateDescription(it?.toString() ?: "")
+            editTodoItemViewModel.updateDescription(it?.toString() ?: "")
         }
     }
 
     private fun setupViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addTodoItemViewModel.todoItem.collectLatest { todoItem ->
+                editTodoItemViewModel.todoItem.collectLatest { todoItem ->
                     binding.importanceValue.text = PriorityMapper.mapToString(todoItem.priority)
                     binding.taskDescription.setTextKeepState(todoItem.text)
                     binding.deadlineDate.text = DateParser.parse(todoItem.deadline)
@@ -75,8 +74,8 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
             }
         }
 
-        addTodoItemViewModel.createOrFind(arguments?.getString(ARG_TODO_ITEM_ID))
-        binding.switchButton.isChecked = addTodoItemViewModel.todoItem.value.deadline != null
+        editTodoItemViewModel.createOrFind(arguments?.getString(ARG_TODO_ITEM_ID))
+        binding.switchButton.isChecked = editTodoItemViewModel.todoItem.value.deadline != null
     }
 
     private fun highlightHighImportanceElement(popupMenu: PopupMenu) {
@@ -97,17 +96,17 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_item_no_importance -> {
-                        addTodoItemViewModel.updatePriority(Priority.COMMON)
+                        editTodoItemViewModel.updatePriority(Priority.COMMON)
                         true
                     }
 
                     R.id.menu_item_low_importance -> {
-                        addTodoItemViewModel.updatePriority(Priority.LOW)
+                        editTodoItemViewModel.updatePriority(Priority.LOW)
                         true
                     }
 
                     R.id.menu_item_high_importance -> {
-                        addTodoItemViewModel.updatePriority(Priority.HIGH)
+                        editTodoItemViewModel.updatePriority(Priority.HIGH)
                         true
                     }
 
@@ -120,12 +119,12 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
 
     private fun setupButtons() {
         binding.saveTaskButton.setOnClickListener {
-            addTodoItemViewModel.saveTodoItem()
+            editTodoItemViewModel.saveTodoItem()
             findNavController().navigate(R.id.action_AddItemFragment_to_TodoItemsFragment)
         }
 
         binding.deleteTaskButton.setOnClickListener {
-            addTodoItemViewModel.removeTodoItem()
+            editTodoItemViewModel.removeTodoItem()
             findNavController().navigate(R.id.action_AddItemFragment_to_TodoItemsFragment)
         }
 
@@ -146,7 +145,7 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
                 val selectedCalendar = Calendar.getInstance()
                 selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
                 val selectedDate = selectedCalendar.time
-                addTodoItemViewModel.updateDeadline(selectedDate)
+                editTodoItemViewModel.updateDeadline(selectedDate)
             }, year, month, day
         )
 
@@ -166,7 +165,7 @@ class AddTodoItemFragment : Fragment(R.layout.fragment_add_item) {
             if (isChecked) {
                 openDatePicker()
             } else {
-                addTodoItemViewModel.updateDeadline(null)
+                editTodoItemViewModel.updateDeadline(null)
             }
         }
     }
