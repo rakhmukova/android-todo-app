@@ -1,4 +1,4 @@
-package com.example.todoapp.data.remote
+package com.example.todoapp.data.remote.exceptions
 
 import okhttp3.Request
 import okio.Timeout
@@ -8,7 +8,6 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -40,12 +39,12 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
                     ) {
                         callback.onResponse(call, response)
                     } else {
-                        callback.onFailure(call, convertToApiException(HttpException(response)))
+                        callback.onFailure(call, ExceptionConverter.toApiException(HttpException(response)))
                     }
                 }
 
                 override fun onFailure(call: Call<T>, t: Throwable) {
-                    callback.onFailure(call, convertToApiException(t))
+                    callback.onFailure(call, ExceptionConverter.toApiException(t))
                 }
             })
         }
@@ -76,23 +75,6 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
 
         override fun timeout(): Timeout {
             return delegate.timeout()
-        }
-    }
-
-    private fun convertToApiException(throwable: Throwable): ApiException {
-        return when (throwable) {
-            is HttpException -> {
-                when (throwable.code()) {
-                    HttpStatusCodes.NOT_SYNCHRONIZED_ERROR -> ApiException.NotSynchronizedDataException()
-                    HttpStatusCodes.UNAUTHORIZED_ERROR -> ApiException.UnauthorizedException()
-                    HttpStatusCodes.ELEMENT_NOT_FOUND_ERROR -> ApiException.ElementNotFoundException()
-                    in HttpStatusCodes.SERVER_ERROR_RANGE_START..HttpStatusCodes.SERVER_ERROR_RANGE_END
-                    -> ApiException.ServerException()
-                    else -> ApiException.NetworkException(throwable)
-                }
-            }
-            is IOException -> ApiException.NetworkException(throwable)
-            else -> ApiException.UnknownException(throwable)
         }
     }
 }

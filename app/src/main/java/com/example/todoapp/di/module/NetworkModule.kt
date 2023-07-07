@@ -2,8 +2,8 @@ package com.example.todoapp.di.module
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.example.todoapp.data.remote.ErrorConverterCallAdapterFactory
 import com.example.todoapp.data.remote.api.TodoApiService
+import com.example.todoapp.data.remote.exceptions.ErrorConverterCallAdapterFactory
 import com.example.todoapp.data.remote.interceptors.AuthInterceptor
 import com.example.todoapp.data.remote.interceptors.RetryInterceptor
 import com.example.todoapp.di.component.AppScope

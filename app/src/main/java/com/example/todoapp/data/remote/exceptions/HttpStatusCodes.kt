@@ -1,4 +1,4 @@
-package com.example.todoapp.data.remote
+package com.example.todoapp.data.remote.exceptions
 
 object HttpStatusCodes {
     const val SUCCESS_RANGE_START = 200
