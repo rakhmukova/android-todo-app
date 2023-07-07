@@ -3,8 +3,8 @@ package com.example.todoapp.data.model
 import java.util.*
 
 data class TodoItem(
-    val id: String,
-    val text: String,
+    val id: String = UUID.randomUUID().toString(),
+    val text: String = "",
     val priority: Priority = Priority.COMMON,
     val deadline: Date? = null,
     val isCompleted: Boolean = false,
