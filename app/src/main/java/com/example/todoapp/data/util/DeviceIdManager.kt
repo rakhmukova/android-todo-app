@@ -2,7 +2,7 @@ package com.example.todoapp.data.util
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

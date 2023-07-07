@@ -5,7 +5,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

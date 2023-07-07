@@ -1,7 +1,7 @@
 package com.example.todoapp.data.repository
 
 import com.example.todoapp.data.remote.model.UserAuthorization
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject

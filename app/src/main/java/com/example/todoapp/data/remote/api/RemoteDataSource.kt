@@ -6,7 +6,7 @@ import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.model.requests.TodoItemRequest
 import com.example.todoapp.data.remote.model.requests.TodoListRequest
 import com.example.todoapp.data.remote.model.responses.TodoResponse
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@ import com.example.todoapp.data.remote.api.TodoApiService
 import com.example.todoapp.data.remote.exceptions.ErrorConverterCallAdapterFactory
 import com.example.todoapp.data.remote.interceptors.AuthInterceptor
 import com.example.todoapp.data.remote.interceptors.RetryInterceptor
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

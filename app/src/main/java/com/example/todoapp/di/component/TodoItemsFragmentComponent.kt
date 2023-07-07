@@ -1,5 +1,6 @@
 package com.example.todoapp.di.component
 
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todolist.TodoItemsFragment
 import dagger.Subcomponent
 

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.todoapp.data.local.dao.TodoItemDao
 import com.example.todoapp.data.local.entities.TodoItemEntity
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 
 /**
  * Database class for the TodoApp application.

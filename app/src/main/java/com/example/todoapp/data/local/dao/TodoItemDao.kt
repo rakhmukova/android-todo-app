@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.todoapp.data.local.entities.TodoItemEntity
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import kotlinx.coroutines.flow.Flow
 
 /**

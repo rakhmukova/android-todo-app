@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.todoapp.data.local.AppDatabase
 import com.example.todoapp.data.local.dao.TodoItemDao
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 

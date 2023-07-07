@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.todoapp.data.remote.exceptions.HttpStatusCodes
 import com.example.todoapp.data.remote.model.UserAuthorization
 import com.example.todoapp.data.repository.AuthRepository
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

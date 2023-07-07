@@ -4,14 +4,14 @@ import com.example.todoapp.data.local.dao.TodoItemDao
 import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.data.mappers.EntityDomainMapper
 import com.example.todoapp.data.model.TodoItem
-import dagger.Reusable
+import com.example.todoapp.di.scope.AppScope
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
  * Local data source for accessing and manipulating items in the local database.
  */
-@Reusable
+@AppScope
 class LocalDataSource @Inject constructor(
     private val todoItemDao: TodoItemDao,
     private val entityDomainMapper: EntityDomainMapper

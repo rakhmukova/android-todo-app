@@ -6,12 +6,9 @@ import com.example.todoapp.di.module.DatabaseModule
 import com.example.todoapp.di.module.NetworkModule
 import com.example.todoapp.di.module.SharedPreferencesModule
 import com.example.todoapp.di.module.WorkerModule
+import com.example.todoapp.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Scope
-
-@Scope
-annotation class AppScope
 
 @AppScope
 @Component(

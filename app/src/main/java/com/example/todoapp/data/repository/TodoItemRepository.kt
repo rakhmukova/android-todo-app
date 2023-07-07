@@ -6,7 +6,7 @@ import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.api.RemoteDataSource
 import com.example.todoapp.data.remote.exceptions.ApiException
-import com.example.todoapp.di.component.AppScope
+import com.example.todoapp.di.scope.AppScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
