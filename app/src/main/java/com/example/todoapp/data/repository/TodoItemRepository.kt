@@ -3,7 +3,7 @@ package com.example.todoapp.data.repository
 import com.example.todoapp.data.DataState
 import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
-import com.example.todoapp.data.remote.ErrorConverterCallAdapterFactory
+import com.example.todoapp.data.remote.ApiException
 import com.example.todoapp.data.remote.api.RemoteDataSource
 import com.example.todoapp.di.component.AppScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,7 @@ class TodoItemRepository @Inject constructor(
     val updateTodoItemState: StateFlow<DataState<Unit>>
         get() = _updateTodoItemState
 
-    suspend fun loadData() = withContext(Dispatchers.IO){
+    suspend fun loadData() = withContext(Dispatchers.IO) {
         try {
             val items = remoteDataSource.getTodoItems()
             localDataSource.updateTodoItems(items)
@@ -65,7 +65,7 @@ class TodoItemRepository @Inject constructor(
             localDataSource.addTodoItem(todoItem)
             remoteDataSource.addTodoItem(todoItem)
             _addTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ErrorConverterCallAdapterFactory.NotSynchronizedDataException){
+        } catch (e: ApiException.NotSynchronizedDataException) {
             // todo: handle wrong revision - syncTodoItems
         } catch (e: Throwable) {
             _addTodoItemState.value = DataState.Error(e)
@@ -77,7 +77,7 @@ class TodoItemRepository @Inject constructor(
             localDataSource.removeTodoItem(itemId)
             remoteDataSource.removeTodoItem(itemId)
             _removeTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ErrorConverterCallAdapterFactory.NotSynchronizedDataException){
+        } catch (e: ApiException.NotSynchronizedDataException) {
             // todo: handle wrong revision - syncTodoItems
         } catch (e: Throwable) {
             _removeTodoItemState.value = DataState.Error(e)
@@ -89,7 +89,7 @@ class TodoItemRepository @Inject constructor(
             localDataSource.updateTodoItem(todoItem)
             remoteDataSource.updateTodoItem(todoItem)
             _updateTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ErrorConverterCallAdapterFactory.NotSynchronizedDataException){
+        } catch (e: ApiException.NotSynchronizedDataException) {
             // todo: handle wrong revision - syncTodoItems
         } catch (e: Throwable) {
             _updateTodoItemState.value = DataState.Error(e)
