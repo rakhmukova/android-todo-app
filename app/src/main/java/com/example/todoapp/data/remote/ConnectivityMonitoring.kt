@@ -1,6 +1,5 @@
 package com.example.todoapp.data.remote
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import com.example.todoapp.data.repository.TodoItemRepository
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 @AppScope
 class ConnectivityMonitoring @Inject constructor(
-    private val context: Context,
+    private val connectivityManager: ConnectivityManager,
     private val todoItemRepository: TodoItemRepository) {
     fun setupNetworkListener() {
         val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -26,9 +25,6 @@ class ConnectivityMonitoring @Inject constructor(
             }
             // todo: return flow and collect in repo
         }
-
-        val connectivityManager: ConnectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }

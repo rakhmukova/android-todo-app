@@ -1,5 +1,7 @@
 package com.example.todoapp.di.module
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.example.todoapp.data.remote.ErrorConverterCallAdapterFactory
 import com.example.todoapp.data.remote.api.TodoApiService
 import com.example.todoapp.data.remote.interceptors.AuthInterceptor
@@ -42,9 +44,15 @@ class NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(NetworkModule.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(ErrorConverterCallAdapterFactory())
             .build()
+    }
+
+    @Provides
+    @AppScope
+    fun provideConnectivityManager(context: Context): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 }
