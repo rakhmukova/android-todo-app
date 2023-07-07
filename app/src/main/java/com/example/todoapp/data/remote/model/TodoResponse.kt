@@ -8,11 +8,11 @@ open class TodoResponse(
         status: String,
         val element: ApiTodoItem,
         revision: Int
-    ): TodoResponse(status, revision)
+    ) : TodoResponse(status, revision)
 
     class List(
         status: String,
         val list: kotlin.collections.List<ApiTodoItem>,
         revision: Int
-    ): TodoResponse(status, revision)
+    ) : TodoResponse(status, revision)
 }
