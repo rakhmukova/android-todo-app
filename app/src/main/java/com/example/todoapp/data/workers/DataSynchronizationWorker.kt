@@ -1,4 +1,4 @@
-package com.example.todoapp.workers
+package com.example.todoapp.data.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -14,7 +14,7 @@ class DataSynchronizationWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        try {
+        return@withContext try {
             repository.syncTodoItems()
             Result.success()
         } catch (e: Throwable) {

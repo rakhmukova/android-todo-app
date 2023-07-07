@@ -3,9 +3,9 @@ package com.example.todoapp
 import android.app.Application
 import com.example.todoapp.data.remote.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
+import com.example.todoapp.data.workers.WorkerProvider
 import com.example.todoapp.di.component.AppComponent
 import com.example.todoapp.di.component.DaggerAppComponent
-import com.example.todoapp.workers.WorkerProvider
 import javax.inject.Inject
 
 class TodoApp : Application() {

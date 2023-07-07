@@ -1,4 +1,4 @@
-package com.example.todoapp.workers
+package com.example.todoapp.data.workers
 
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -20,7 +20,7 @@ class WorkerProvider @Inject constructor(
 
         val dataSyncRequest = PeriodicWorkRequest.Builder(
             DataSynchronizationWorker::class.java,
-            8,
+            REPEAT_INTERVAL,
             TimeUnit.HOURS
         )
             .setConstraints(constraints)
@@ -31,5 +31,9 @@ class WorkerProvider @Inject constructor(
             ExistingPeriodicWorkPolicy.KEEP,
             dataSyncRequest
         )
+    }
+
+    companion object {
+        const val REPEAT_INTERVAL: Long = 8
     }
 }
