@@ -20,8 +20,8 @@ class TodoItemRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) {
     // todo: create repo to handle different errors?
-    private val _syncWithBackend = MutableStateFlow(false)
-    val syncWithBackend: Flow<Boolean>
+    private val _syncWithBackend = MutableStateFlow(true)
+    val syncWithBackend: StateFlow<Boolean>
         get() = _syncWithBackend
 
     private val _todoItems = localDataSource.getTodoItemsFlow()
@@ -74,7 +74,7 @@ class TodoItemRepository @Inject constructor(
                 localDataSource.updateTodoItems(items)
                 _syncWithBackend.value = true
             },
-            errorBlock = {
+            networkErrorBlock = {
                 _syncWithBackend.value = false
             }
         )
@@ -89,8 +89,11 @@ class TodoItemRepository @Inject constructor(
                 remoteDataSource.updateTodoItems(localItems)
                 _syncWithBackend.value = true
             },
-            errorBlock = {
+            networkErrorBlock = {
                 _syncWithBackend.value = false
+            },
+            unauthorizedErrorBlock = {
+                _authState.value = false
             }
         )
     }
@@ -107,7 +110,6 @@ class TodoItemRepository @Inject constructor(
             networkErrorBlock = {
                 _changeItemState.value = DataState.Error(it, ChangeItemAction.ADD)
             },
-            // todo
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
                     block = {
@@ -116,6 +118,9 @@ class TodoItemRepository @Inject constructor(
                     }
                 )
             },
+            unauthorizedErrorBlock = {
+                _authState.value = false
+            }
         )
     }
 
@@ -138,6 +143,9 @@ class TodoItemRepository @Inject constructor(
                     }
                 )
             },
+            unauthorizedErrorBlock = {
+                _authState.value = false
+            }
         )
     }
 
@@ -160,6 +168,9 @@ class TodoItemRepository @Inject constructor(
                     }
                 )
             },
+            unauthorizedErrorBlock = {
+                _authState.value = false
+            }
         )
     }
 

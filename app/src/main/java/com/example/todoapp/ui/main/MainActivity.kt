@@ -62,10 +62,23 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.syncWithBackend.collect {
+                mainViewModel.syncWithBackend.collectLatest {
                     when (it) {
                         false -> {
                             showSnackbar(getString(R.string.upload_error))
+                        }
+                        true -> {}
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.authState.collectLatest {
+                    when (it) {
+                        false -> {
+                            showSnackbar(getString(R.string.not_authorized_error))
                         }
                         true -> {}
                     }
