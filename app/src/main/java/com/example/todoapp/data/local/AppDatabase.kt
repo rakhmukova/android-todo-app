@@ -3,8 +3,8 @@ package com.example.todoapp.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.data.local.dao.TodoItemDao
+import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.di.component.AppScope
 
 @AppScope

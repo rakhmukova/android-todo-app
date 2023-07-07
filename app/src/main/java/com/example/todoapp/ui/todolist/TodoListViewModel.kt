@@ -1,9 +1,9 @@
 package com.example.todoapp.ui.todolist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.repository.TodoItemRepository
-import com.example.todoapp.di.component.FragmentScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

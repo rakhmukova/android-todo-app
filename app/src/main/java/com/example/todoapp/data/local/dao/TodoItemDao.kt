@@ -52,7 +52,7 @@ interface TodoItemDao {
         todoItems.forEach { remoteItem ->
             val existingItem = existingTodoItems.find { it.id == remoteItem.id }
             if (existingItem != null) {
-                if (remoteItem.modifiedAt > existingItem.modifiedAt){
+                if (remoteItem.modifiedAt > existingItem.modifiedAt) {
                     itemsToInsert.add(remoteItem)
                 }
             } else {

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.todoapp.data.repository.TodoItemRepository
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val repository: TodoItemRepository): ViewModel() {
+class MainViewModel @Inject constructor(repository: TodoItemRepository) : ViewModel() {
     val addTodoItemState = repository.addTodoItemState
     val removeTodoItemState = repository.removeTodoItemState
     val updateTodoItemState = repository.updateTodoItemState

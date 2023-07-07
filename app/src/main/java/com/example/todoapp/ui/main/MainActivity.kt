@@ -101,11 +101,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) ||
+            super.onSupportNavigateUp()
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(binding.root, message, 1000).show()
+        Snackbar.make(binding.root, message, SNACKBAR_DURATION).show()
+    }
+
+    companion object {
+        private const val SNACKBAR_DURATION = 1000
     }
 }

@@ -8,7 +8,6 @@ import com.example.todoapp.di.component.DaggerAppComponent
 import com.example.todoapp.workers.WorkerProvider
 import javax.inject.Inject
 
-
 class TodoApp : Application() {
 
     lateinit var appComponent: AppComponent
@@ -16,8 +15,10 @@ class TodoApp : Application() {
 
     @Inject
     lateinit var todoItemRepository: TodoItemRepository
+
     @Inject
     lateinit var workerProvider: WorkerProvider
+
     @Inject
     lateinit var connectivityMonitoring: ConnectivityMonitoring
 

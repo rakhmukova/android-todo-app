@@ -24,7 +24,6 @@ import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoratio
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
 class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     private lateinit var component: TodoItemsFragmentComponent
@@ -47,7 +46,8 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTodoItemsBinding.inflate(inflater, container, false)

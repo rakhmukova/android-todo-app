@@ -47,7 +47,8 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditItemBinding.inflate(inflater, container, false)
@@ -94,7 +95,9 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
         val s = SpannableString(getString(R.string.high_priority))
         s.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-            0, s.length, 0
+            0,
+            s.length,
+            0
         )
         highElement.title = s
     }
@@ -151,13 +154,17 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(
-            requireContext(), R.style.DatePickerStyle,
+            requireContext(),
+            R.style.DatePickerStyle,
             { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedCalendar = Calendar.getInstance()
                 selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
                 val selectedDate = selectedCalendar.time
                 editTodoItemViewModel.updateDeadline(selectedDate)
-            }, year, month, day
+            },
+            year,
+            month,
+            day
         )
 
         datePickerDialog.setOnCancelListener {

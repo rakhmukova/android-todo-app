@@ -10,16 +10,18 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Scope
 
-
 @Scope
 annotation class AppScope
 
 @AppScope
-@Component(modules = [
-    DatabaseModule::class,
-    NetworkModule::class,
-    WorkerModule::class,
-    SharedPreferencesModule::class])
+@Component(
+    modules = [
+        DatabaseModule::class,
+        NetworkModule::class,
+        WorkerModule::class,
+        SharedPreferencesModule::class
+    ]
+)
 interface AppComponent {
     val activityComponent: ActivityComponent
     fun inject(todoApp: TodoApp)

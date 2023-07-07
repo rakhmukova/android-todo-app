@@ -40,7 +40,6 @@ class EditTodoItemViewModel @Inject constructor(private val repository: TodoItem
     fun saveTodoItem() {
         val modifiedAt = Date()
         val currentTodoItem = _todoItem.value.copy(modifiedAt = modifiedAt)
-        
         if (_isExisting == true) {
             viewModelScope.launch {
                 repository.updateTodoItem(currentTodoItem)
@@ -67,7 +66,7 @@ class EditTodoItemViewModel @Inject constructor(private val repository: TodoItem
             _isExisting = true
             viewModelScope.launch {
                 val todoItem = repository.findById(id)
-                if (todoItem == null){
+                if (todoItem == null) {
                     _todoItem.value = getDefaultTodoItem()
                 } else {
                     _todoItem.value = todoItem

@@ -12,9 +12,9 @@ import com.example.todoapp.util.DateParser
 class TodoItemViewHolder(
     private val binding: TodoItemBinding,
     private val callbacks: TodoItemChangeCallbacks
-    ) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(todoItem: TodoItem, position: Int){
+    fun onBind(todoItem: TodoItem, position: Int) {
         setTaskDeadline(todoItem)
         setTaskDescription(todoItem)
         setPriorityIcon(todoItem)

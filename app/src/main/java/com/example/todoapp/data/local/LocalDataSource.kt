@@ -11,12 +11,13 @@ import javax.inject.Inject
 @AppScope
 class LocalDataSource @Inject constructor(
     private val todoItemDao: TodoItemDao,
-    private val entityDomainMapper: EntityDomainMapper) {
+    private val entityDomainMapper: EntityDomainMapper
+) {
 
     private fun List<TodoItemEntity>.processEntities(): List<TodoItem> {
         return this
             .map(entityDomainMapper::toDomainModel)
-            .filter { ! it.isDeleted }
+            .filter { !it.isDeleted }
     }
 
     fun getTodoItemsFlow() = todoItemDao.getTodoItemsFlow().map {
@@ -30,9 +31,11 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        todoItemDao.updateTodoItems(todoItems.map {
-            entityDomainMapper.toEntityModel(it)
-        })
+        todoItemDao.updateTodoItems(
+            todoItems.map {
+                entityDomainMapper.toEntityModel(it)
+            }
+        )
     }
 
     suspend fun addTodoItem(todoItem: TodoItem) {

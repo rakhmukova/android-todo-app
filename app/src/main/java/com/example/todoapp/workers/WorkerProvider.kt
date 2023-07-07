@@ -20,7 +20,8 @@ class WorkerProvider @Inject constructor(
 
         val dataSyncRequest = PeriodicWorkRequest.Builder(
             DataSynchronizationWorker::class.java,
-            8, TimeUnit.HOURS
+            8,
+            TimeUnit.HOURS
         )
             .setConstraints(constraints)
             .build()

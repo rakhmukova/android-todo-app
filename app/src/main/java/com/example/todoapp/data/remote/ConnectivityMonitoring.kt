@@ -12,7 +12,8 @@ import javax.inject.Inject
 @AppScope
 class ConnectivityMonitoring @Inject constructor(
     private val connectivityManager: ConnectivityManager,
-    private val todoItemRepository: TodoItemRepository) {
+    private val todoItemRepository: TodoItemRepository
+) {
     fun setupNetworkListener() {
         val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {

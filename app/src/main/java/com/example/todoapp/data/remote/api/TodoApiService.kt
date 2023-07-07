@@ -25,8 +25,7 @@ interface TodoApiService {
     ): Response<TodoResponse.List>
 
     @GET("list/{todoItemId}")
-    suspend fun getTodoItem(@Path("todoItemId") todoItemId: String):
-            Response<TodoResponse.Item>
+    suspend fun getTodoItem(@Path("todoItemId") todoItemId: String): Response<TodoResponse.Item>
 
     @POST("list")
     suspend fun addTodoItem(

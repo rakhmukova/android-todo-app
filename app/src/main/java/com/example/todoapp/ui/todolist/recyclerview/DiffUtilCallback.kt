@@ -3,7 +3,7 @@ package com.example.todoapp.ui.todolist.recyclerview
 import androidx.recyclerview.widget.DiffUtil
 import com.example.todoapp.data.model.TodoItem
 
-class DiffUtilCallback(): DiffUtil.ItemCallback<TodoItem>() {
+class DiffUtilCallback : DiffUtil.ItemCallback<TodoItem>() {
     override fun areItemsTheSame(oldItem: TodoItem, newItem: TodoItem): Boolean {
         return oldItem.id == newItem.id
     }

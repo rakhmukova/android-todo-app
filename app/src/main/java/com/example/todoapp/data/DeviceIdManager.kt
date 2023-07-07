@@ -13,7 +13,7 @@ import javax.inject.Inject
 @AppScope
 class DeviceIdManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    private var _deviceId : String = ""
+    private var _deviceId: String = ""
 
     init {
         val coroutineScope = CoroutineScope(Dispatchers.IO)

@@ -1,8 +1,6 @@
 package com.example.todoapp.di.module
 
 import androidx.lifecycle.ViewModel
-import com.example.todoapp.di.component.ActivityScope
-import com.example.todoapp.di.component.FragmentScope
 import com.example.todoapp.ui.edititem.EditTodoItemViewModel
 import com.example.todoapp.ui.main.MainViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel

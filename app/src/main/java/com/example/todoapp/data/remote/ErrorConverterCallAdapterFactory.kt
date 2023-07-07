@@ -2,9 +2,11 @@ package com.example.todoapp.data.remote
 
 import okhttp3.Request
 import okio.Timeout
-import retrofit2.*
+import retrofit2.Call
 import retrofit2.CallAdapter
+import retrofit2.Callback
 import retrofit2.HttpException
+import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
@@ -92,8 +94,8 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
     }
 
     class NotSynchronizedDataException : Exception("Not Synchronized Data")
-    class UnauthorizedException: Exception("Unauthorized")
-    class ElementNotFoundException: Exception("Not Found")
-    class ServerException: Exception("Server Error")
+    class UnauthorizedException : Exception("Unauthorized")
+    class ElementNotFoundException : Exception("Not Found")
+    class ServerException : Exception("Server Error")
     class NetworkException(cause: Throwable) : IOException("Network Error", cause)
 }
