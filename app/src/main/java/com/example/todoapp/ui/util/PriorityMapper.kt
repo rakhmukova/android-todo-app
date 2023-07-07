@@ -1,4 +1,4 @@
-package com.example.todoapp.util
+package com.example.todoapp.ui.util
 
 import com.example.todoapp.data.model.Priority
 

@@ -1,4 +1,4 @@
-package com.example.todoapp.util
+package com.example.todoapp.ui.util
 
 import java.text.SimpleDateFormat
 import java.util.*

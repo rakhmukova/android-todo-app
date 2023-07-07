@@ -22,8 +22,8 @@ import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentEditItemBinding
 import com.example.todoapp.di.component.EditTodoItemFragmentComponent
 import com.example.todoapp.ui.main.MainActivity
-import com.example.todoapp.util.DateParser
-import com.example.todoapp.util.PriorityMapper
+import com.example.todoapp.ui.util.DateParser
+import com.example.todoapp.ui.util.PriorityMapper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*

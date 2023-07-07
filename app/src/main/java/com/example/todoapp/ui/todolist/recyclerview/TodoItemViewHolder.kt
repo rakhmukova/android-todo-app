@@ -7,7 +7,7 @@ import com.example.todoapp.R
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.TodoItemBinding
-import com.example.todoapp.util.DateParser
+import com.example.todoapp.ui.util.DateParser
 
 class TodoItemViewHolder(
     private val binding: TodoItemBinding,
