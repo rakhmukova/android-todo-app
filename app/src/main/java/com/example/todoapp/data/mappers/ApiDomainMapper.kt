@@ -38,7 +38,7 @@ class ApiDomainMapper @Inject constructor(
             createdAt = dateConverter.fromDate(todoItem.createdAt),
             modifiedAt = dateConverter.fromDate(todoItem.modifiedAt),
             color = "#FFFFFF",
-            lastUpdatedBy = deviceIdManager.getDeviceId()
+            lastUpdatedBy = deviceIdManager.deviceId
         )
     }
 }

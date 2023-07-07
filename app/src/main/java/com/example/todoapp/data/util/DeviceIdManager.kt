@@ -16,17 +16,22 @@ import javax.inject.Inject
 @AppScope
 class DeviceIdManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    private var _deviceId: String = ""
+    var deviceId: String = ""
+        private set
+        get() {
+            Log.d(TAG, "getDeviceId: $field")
+            return field
+        }
 
     init {
         val coroutineScope = CoroutineScope(Dispatchers.IO)
         coroutineScope.launch {
-            _deviceId = loadDeviceId()
+            deviceId = loadDeviceId()
         }
     }
 
-    private fun saveDeviceId(androidId: String) {
-        sharedPreferences.edit().putString(DEVICE_ID_KEY, androidId).apply()
+    private fun saveDeviceId(deviceId: String) {
+        sharedPreferences.edit().putString(DEVICE_ID_KEY, deviceId).apply()
     }
 
     private suspend fun loadDeviceId(): String = withContext(Dispatchers.IO) {
@@ -37,11 +42,6 @@ class DeviceIdManager @Inject constructor(private val sharedPreferences: SharedP
         }
 
         return@withContext deviceId
-    }
-
-    fun getDeviceId(): String {
-        Log.d(TAG, "getDeviceId: $_deviceId")
-        return _deviceId
     }
 
     companion object {
