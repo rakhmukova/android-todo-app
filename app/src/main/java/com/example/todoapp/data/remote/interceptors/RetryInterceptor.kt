@@ -12,13 +12,13 @@ class RetryInterceptor : Interceptor {
         var retryCount = 0
 
         // todo: react only to network error
-        while (!response.isSuccessful && retryCount < RETRY_NUM) {
+        while (!response.isSuccessful && retryCount < MAX_RETRIES) {
             try {
                 response.close()
                 response = chain.proceed(request)
                 retryCount += 1
             } catch (e: IOException) {
-                Log.d(TAG, "intercept: $retryCount")
+                Log.d(TAG, "intercept: $retryCount ${e.message}", e)
             }
         }
 
@@ -26,7 +26,7 @@ class RetryInterceptor : Interceptor {
     }
 
     companion object {
-        const val RETRY_NUM = 3
+        const val MAX_RETRIES = 3
         const val TAG = "RetryInterceptor"
     }
 }
