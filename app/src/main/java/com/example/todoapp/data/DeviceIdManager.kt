@@ -1,35 +1,48 @@
 package com.example.todoapp.data
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.todoapp.di.component.AppScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
-object DeviceIdManager {
+@AppScope
+class DeviceIdManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    private const val DEVICE_ID_KEY = "DEVICE_ID"
-    private var _deviceId : String? = null
+    private var _deviceId : String = ""
 
-    private fun saveDeviceId(sharedPreferences: SharedPreferences, androidId: String) {
+    init {
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope.launch {
+            _deviceId = loadDeviceId()
+        }
+    }
+
+    private fun saveDeviceId(androidId: String) {
         sharedPreferences.edit().putString(DEVICE_ID_KEY, androidId).apply()
     }
 
-    fun loadDeviceId(context: Context) {
-        val sharedPreferences =
-            context.getSharedPreferences("ANDROID_ID_PREFERENCES", Context.MODE_PRIVATE)
+    private suspend fun loadDeviceId(): String = withContext(Dispatchers.IO) {
         var deviceId = sharedPreferences.getString(DEVICE_ID_KEY, null)
         if (deviceId == null) {
             deviceId = UUID.randomUUID().toString()
-            saveDeviceId(sharedPreferences, deviceId)
+            saveDeviceId(deviceId)
         }
 
-        _deviceId = deviceId
+        return@withContext deviceId
     }
 
     fun getDeviceId(): String {
         Log.d(TAG, "getDeviceId: $_deviceId")
-        return _deviceId?: ""
+        return _deviceId
     }
 
-    private const val TAG = "DeviceIdManager"
+    companion object {
+        private const val TAG = "DeviceIdManager"
+        private const val DEVICE_ID_KEY = "DEVICE_ID"
+    }
 }

@@ -1,15 +1,16 @@
 package com.example.todoapp.data.mappers
 
+import com.example.todoapp.di.component.AppScope
 import java.util.Date
+import javax.inject.Inject
 
-class DateConverter {
-    companion object {
-        fun dateToLong(date: Date): Long {
-            return date.time
-        }
+@AppScope
+class DateConverter @Inject constructor() {
+    fun fromDate(date: Date): Long {
+        return date.time
+    }
 
-        fun longToDate(timestamp: Long): Date {
-            return Date(timestamp)
-        }
+    fun toDate(timestamp: Long): Date {
+        return Date(timestamp)
     }
 }

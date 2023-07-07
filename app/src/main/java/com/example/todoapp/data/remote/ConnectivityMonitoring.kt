@@ -4,23 +4,27 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import com.example.todoapp.data.repository.TodoItemRepository
+import com.example.todoapp.di.component.AppScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ConnectivityMonitoring {
-    fun setupNetworkListener(
-        context: Context,
-        todoItemRepository: TodoItemRepository,
-        coroutineScope: CoroutineScope
-    ) {
+@AppScope
+class ConnectivityMonitoring @Inject constructor(
+    private val context: Context,
+    private val todoItemRepository: TodoItemRepository) {
+    fun setupNetworkListener() {
         val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
 
+                val coroutineScope = CoroutineScope(Dispatchers.IO)
                 coroutineScope.launch {
                     todoItemRepository.syncTodoItems()
                 }
             }
+            // todo: return flow and collect in repo
         }
 
         val connectivityManager: ConnectivityManager =

@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,14 +13,18 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.DataState
 import com.example.todoapp.databinding.ActivityMainBinding
+import com.example.todoapp.di.component.ActivityComponent
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by lazy {
-        (application as TodoApp).mainViewModel
+    lateinit var activityComponent: ActivityComponent
+        private set
+
+    private val mainViewModel: MainViewModel by viewModels {
+        activityComponent.viewModelFactory
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -27,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        activityComponent = (applicationContext as TodoApp).appComponent.activityComponent
+        activityComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

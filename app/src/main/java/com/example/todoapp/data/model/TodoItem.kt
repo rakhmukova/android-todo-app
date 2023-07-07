@@ -9,6 +9,6 @@ data class TodoItem(
     val deadline: Date? = null,
     val isCompleted: Boolean = false,
     val createdAt: Date = Date(),
-    val modifiedAt: Date? = null,
+    val modifiedAt: Date = Date(),
     val isDeleted: Boolean = false
 )

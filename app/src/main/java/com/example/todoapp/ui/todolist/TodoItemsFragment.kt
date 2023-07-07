@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
-import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.FragmentTodoItemsBinding
+import com.example.todoapp.di.component.TodoItemsFragmentComponent
 import com.example.todoapp.ui.edititem.EditTodoItemFragment
+import com.example.todoapp.ui.main.MainActivity
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemChangeCallbacks
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoration
@@ -25,14 +27,24 @@ import kotlinx.coroutines.launch
 
 class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
-    private lateinit var todoAdapter: TodoItemsAdapter
+    private lateinit var component: TodoItemsFragmentComponent
 
-    private val todoListViewModel: TodoListViewModel by lazy {
-        (requireActivity().application as TodoApp).todoListViewModel
+    // todo: get factory from fragment component
+    private val todoListViewModel: TodoListViewModel by viewModels {
+        (activity as MainActivity).activityComponent.viewModelFactory
     }
+
+    private lateinit var todoAdapter: TodoItemsAdapter
 
     private var _binding: FragmentTodoItemsBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        component = (activity as MainActivity).activityComponent.todoItemsFragmentComponent
+        component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

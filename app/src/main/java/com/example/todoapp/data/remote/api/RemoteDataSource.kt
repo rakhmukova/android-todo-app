@@ -6,9 +6,14 @@ import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.model.TodoItemRequest
 import com.example.todoapp.data.remote.model.TodoListRequest
 import com.example.todoapp.data.remote.model.TodoResponse
+import com.example.todoapp.di.component.AppScope
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteDataSource(private val apiService: TodoApiService) {
+@AppScope
+class RemoteDataSource @Inject constructor(
+    private val apiService: TodoApiService,
+    private val apiDomainMapper: ApiDomainMapper) {
     @Volatile
     private var _revision: Int = 0
 
@@ -23,23 +28,23 @@ class RemoteDataSource(private val apiService: TodoApiService) {
     suspend fun getTodoItems(): List<TodoItem> {
         val response = apiService.getAllTodoItems()
         updateRevision(response)
-        return response.body()?.list?.map(ApiDomainMapper::toDomainModel)?: emptyList()
+        return response.body()?.list?.map(apiDomainMapper::toDomainModel)?: emptyList()
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        apiService.updateTodoItems(_revision, TodoListRequest(todoItems.map(ApiDomainMapper::toApiModel)))
+        apiService.updateTodoItems(_revision, TodoListRequest(todoItems.map(apiDomainMapper::toApiModel)))
     }
 
     suspend fun addTodoItem(todoItem: TodoItem): Response<TodoResponse.Item> {
         val response = apiService.addTodoItem(_revision,
-            TodoItemRequest(ApiDomainMapper.toApiModel(todoItem)))
+            TodoItemRequest(apiDomainMapper.toApiModel(todoItem)))
         updateRevision(response)
         return response
     }
 
     suspend fun updateTodoItem(todoItem: TodoItem): Response<TodoResponse.Item> {
         val response = apiService.updateTodoItem(todoItem.id,
-            TodoItemRequest(ApiDomainMapper.toApiModel(todoItem)))
+            TodoItemRequest(apiDomainMapper.toApiModel(todoItem)))
         updateRevision(response)
         return response
     }

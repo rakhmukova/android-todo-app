@@ -1,21 +1,20 @@
 package com.example.todoapp.data.repository
 
-import android.content.Context
 import com.example.todoapp.data.DataState
-import com.example.todoapp.data.remote.RetrofitProvider
-import com.example.todoapp.data.local.AppDatabase
 import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.ErrorConverterCallAdapterFactory
 import com.example.todoapp.data.remote.api.RemoteDataSource
-import com.example.todoapp.data.remote.api.TodoApiService
+import com.example.todoapp.di.component.AppScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TodoItemRepository(
+@AppScope
+class TodoItemRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
 ) {
@@ -99,19 +98,5 @@ class TodoItemRepository(
 
     suspend fun findById(itemId: String): TodoItem? = withContext(Dispatchers.IO) {
         return@withContext localDataSource.findById(itemId)
-    }
-
-    companion object {
-        fun create(applicationContext: Context): TodoItemRepository {
-            val retrofit = RetrofitProvider.create()
-            val apiService = retrofit.create(TodoApiService::class.java)
-            val remoteDataSource = RemoteDataSource(apiService)
-
-            val appDatabase = AppDatabase.create(applicationContext)
-            val todoItemDao = appDatabase.todoItemDao()
-            val localDataSource = LocalDataSource(todoItemDao)
-
-            return TodoItemRepository(localDataSource, remoteDataSource)
-        }
     }
 }

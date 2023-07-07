@@ -7,8 +7,10 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.todoapp.data.local.entities.TodoItemEntity
+import com.example.todoapp.di.component.AppScope
 import kotlinx.coroutines.flow.Flow
 
+@AppScope
 @Dao
 interface TodoItemDao {
     @Query("SELECT * FROM todo_items")
@@ -50,7 +52,7 @@ interface TodoItemDao {
         todoItems.forEach { remoteItem ->
             val existingItem = existingTodoItems.find { it.id == remoteItem.id }
             if (existingItem != null) {
-                if (remoteItem.modifiedAt!! > existingItem.modifiedAt!!){
+                if (remoteItem.modifiedAt > existingItem.modifiedAt){
                     itemsToInsert.add(remoteItem)
                 }
             } else {

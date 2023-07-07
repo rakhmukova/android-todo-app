@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class EditTodoItemViewModel(private val repository: TodoItemRepository) : ViewModel() {
+class EditTodoItemViewModel @Inject constructor(private val repository: TodoItemRepository) : ViewModel() {
 
     private val _todoItem = MutableStateFlow(getDefaultTodoItem())
     val todoItem: StateFlow<TodoItem> = _todoItem.asStateFlow()

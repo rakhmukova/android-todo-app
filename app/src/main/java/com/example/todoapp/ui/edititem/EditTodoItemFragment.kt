@@ -12,14 +12,16 @@ import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
-import com.example.todoapp.TodoApp
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentEditItemBinding
+import com.example.todoapp.di.component.EditTodoItemFragmentComponent
+import com.example.todoapp.ui.main.MainActivity
 import com.example.todoapp.util.DateParser
 import com.example.todoapp.util.PriorityMapper
 import kotlinx.coroutines.flow.collectLatest
@@ -28,12 +30,21 @@ import java.util.*
 
 class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
-    private val editTodoItemViewModel: EditTodoItemViewModel by lazy {
-        (requireActivity().application as TodoApp).editTodoItemViewModel
+    private lateinit var component: EditTodoItemFragmentComponent
+
+    private val editTodoItemViewModel: EditTodoItemViewModel by viewModels {
+        (activity as MainActivity).activityComponent.viewModelFactory
     }
 
     private var _binding: FragmentEditItemBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        component = (activity as MainActivity).activityComponent.editTodoItemFragmentComponent
+        component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
