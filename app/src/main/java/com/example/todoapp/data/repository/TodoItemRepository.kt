@@ -1,7 +1,7 @@
 package com.example.todoapp.data.repository
 
 import android.util.Log
-import com.example.todoapp.data.DataState
+import com.example.todoapp.data.DataResult
 import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.api.RemoteDataSource
@@ -28,13 +28,9 @@ class TodoItemRepository @Inject constructor(
     val todoItems: Flow<List<TodoItem>>
         get() = _todoItems
 
-    private val _changeItemState = MutableStateFlow<DataState<ChangeItemAction>>(DataState.Loading())
-    val changeItemState: StateFlow<DataState<ChangeItemAction>>
+    private val _changeItemState = MutableStateFlow<DataResult<ChangeItemAction>>(DataResult.Loading())
+    val changeItemState: StateFlow<DataResult<ChangeItemAction>>
         get() = _changeItemState
-
-    private val _authState = MutableStateFlow(true)
-    val authState: StateFlow<Boolean>
-        get() = _authState
 
     private suspend fun tryAndHandleNetworkException(
         block: suspend () -> Unit,
@@ -91,9 +87,6 @@ class TodoItemRepository @Inject constructor(
             },
             networkErrorBlock = {
                 _syncWithBackend.value = false
-            },
-            unauthorizedErrorBlock = {
-                _authState.value = false
             }
         )
     }
@@ -103,12 +96,12 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.addTodoItem(todoItem)
             remoteDataSource.addTodoItem(todoItem)
-            _changeItemState.value = DataState.Success(ChangeItemAction.ADD)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.ADD)
         }
         tryAndHandleNetworkException(
             block = block,
             networkErrorBlock = {
-                _changeItemState.value = DataState.Error(it, ChangeItemAction.ADD)
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.ADD)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -117,9 +110,6 @@ class TodoItemRepository @Inject constructor(
                         block()
                     }
                 )
-            },
-            unauthorizedErrorBlock = {
-                _authState.value = false
             }
         )
     }
@@ -128,12 +118,12 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.removeTodoItem(itemId)
             remoteDataSource.removeTodoItem(itemId)
-            _changeItemState.value = DataState.Success(ChangeItemAction.DELETE)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.DELETE)
         }
         tryAndHandleNetworkException(
             block = block,
             networkErrorBlock = {
-                _changeItemState.value = DataState.Error(it, ChangeItemAction.DELETE)
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.DELETE)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -142,9 +132,6 @@ class TodoItemRepository @Inject constructor(
                         block()
                     }
                 )
-            },
-            unauthorizedErrorBlock = {
-                _authState.value = false
             }
         )
     }
@@ -153,12 +140,12 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.updateTodoItem(todoItem)
             remoteDataSource.updateTodoItem(todoItem)
-            _changeItemState.value = DataState.Success(ChangeItemAction.UPDATE)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.UPDATE)
         }
         tryAndHandleNetworkException(
             block = block,
             networkErrorBlock = {
-                _changeItemState.value = DataState.Error(it, ChangeItemAction.UPDATE)
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.UPDATE)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -167,9 +154,6 @@ class TodoItemRepository @Inject constructor(
                         block()
                     }
                 )
-            },
-            unauthorizedErrorBlock = {
-                _authState.value = false
             }
         )
     }

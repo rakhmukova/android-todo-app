@@ -7,6 +7,5 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(repository: TodoItemRepository) : ViewModel() {
     val changeItemState = repository.changeItemState
     val syncWithBackend = repository.syncWithBackend
-    val authState = repository.authState
     // todo: snackbar value
 }

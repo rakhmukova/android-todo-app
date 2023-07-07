@@ -11,7 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.DataState
+import com.example.todoapp.data.DataResult
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.di.component.ActivityComponent
 import com.google.android.material.snackbar.Snackbar
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.changeItemState.collectLatest {
                     when (it) {
-                        is DataState.Error -> {
+                        is DataResult.Error -> {
                             showSnackbar(getString(R.string.update_error))
                         }
                         else -> {}
@@ -66,19 +66,6 @@ class MainActivity : AppCompatActivity() {
                     when (it) {
                         false -> {
                             showSnackbar(getString(R.string.upload_error))
-                        }
-                        true -> {}
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.authState.collectLatest {
-                    when (it) {
-                        false -> {
-                            showSnackbar(getString(R.string.not_authorized_error))
                         }
                         true -> {}
                     }
