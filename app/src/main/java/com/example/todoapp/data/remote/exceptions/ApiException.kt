@@ -2,6 +2,9 @@ package com.example.todoapp.data.remote.exceptions
 
 import java.io.IOException
 
+/**
+ * Base class for API-related exceptions.
+ */
 sealed class ApiException(message: String, cause: Throwable? = null) : IOException(message, cause) {
     class NotSynchronizedDataException : ApiException("Not Synchronized Data")
     class UnauthorizedException : ApiException("Unauthorized")

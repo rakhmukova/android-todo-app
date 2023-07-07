@@ -11,6 +11,10 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * Custom CallAdapter.Factory implementation that wraps Retrofit's Call with an ErrorHandlingCall
+ * to handle API exceptions.
+ */
 class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
     override fun get(returnType: Type, annotations: Array<out Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
         if (getRawType(returnType) != Call::class.java) {

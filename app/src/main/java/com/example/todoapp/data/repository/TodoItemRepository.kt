@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * Repository class for managing todoItems.
+ */
 @AppScope
 class TodoItemRepository @Inject constructor(
     private val localDataSource: LocalDataSource,

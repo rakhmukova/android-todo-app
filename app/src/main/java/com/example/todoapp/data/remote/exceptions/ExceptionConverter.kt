@@ -3,6 +3,9 @@ package com.example.todoapp.data.remote.exceptions
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Utility object that converts different types of exceptions into corresponding ApiException subclasses.
+ */
 object ExceptionConverter {
     fun toApiException(throwable: Throwable): ApiException {
         return when (throwable) {

@@ -13,6 +13,9 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+/**
+ * API service interface for performing CRUD operations on items.
+ */
 interface TodoApiService {
 
     @GET("list")

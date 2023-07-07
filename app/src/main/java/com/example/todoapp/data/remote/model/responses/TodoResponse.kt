@@ -2,6 +2,9 @@ package com.example.todoapp.data.remote.model.responses
 
 import com.example.todoapp.data.remote.model.ApiTodoItem
 
+/**
+ * Base class for responses.
+ */
 open class TodoResponse(
     val status: String,
     val revision: Int

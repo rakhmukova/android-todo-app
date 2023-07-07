@@ -1,5 +1,8 @@
 package com.example.todoapp.data.remote.exceptions
 
+/**
+ * Object that defines common HTTP status codes for handling API responses.
+ */
 object HttpStatusCodes {
     const val SUCCESS_RANGE_START = 200
     const val SUCCESS_RANGE_END = 299

@@ -10,6 +10,9 @@ import com.example.todoapp.di.scope.AppScope
 import retrofit2.Response
 import javax.inject.Inject
 
+/**
+ * Remote data source responsible for making API calls to retrieve and update items.
+ */
 @AppScope
 class RemoteDataSource @Inject constructor(
     private val apiService: TodoApiService,
