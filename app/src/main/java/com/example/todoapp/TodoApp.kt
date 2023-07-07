@@ -1,7 +1,7 @@
 package com.example.todoapp
 
 import android.app.Application
-import com.example.todoapp.data.remote.ConnectivityMonitoring
+import com.example.todoapp.data.util.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
 import com.example.todoapp.data.workers.WorkerProvider
 import com.example.todoapp.di.component.AppComponent

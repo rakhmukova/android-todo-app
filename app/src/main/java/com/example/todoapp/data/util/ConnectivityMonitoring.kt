@@ -1,4 +1,4 @@
-package com.example.todoapp.data.remote
+package com.example.todoapp.data.util
 
 import android.net.ConnectivityManager
 import android.net.Network
@@ -9,6 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Utility class that monitors network connectivity and triggers synchronization
+ * with the backend when the network becomes available.
+ */
 @Reusable
 class ConnectivityMonitoring @Inject constructor(
     private val connectivityManager: ConnectivityManager,
