@@ -31,10 +31,9 @@ class NetworkModule {
 
     @Provides
     @AppScope
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            // todo: get token from ui
-            .addInterceptor(AuthInterceptor("your_token"))
+            .addInterceptor(authInterceptor)
             .addInterceptor(RetryInterceptor())
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
