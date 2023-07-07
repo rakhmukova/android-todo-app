@@ -18,6 +18,9 @@ import java.util.concurrent.TimeUnit
 class NetworkModule {
     companion object {
         private const val BASE_URL = "https://beta.mrdekk.ru/todobackend/"
+        private const val CONNECT_TIMEOUT: Long = 120
+        private const val READ_TIMEOUT: Long = 120
+        private const val WRITE_TIMEOUT: Long = 90
     }
 
     @Provides
@@ -33,9 +36,9 @@ class NetworkModule {
             // todo: get token from ui
             .addInterceptor(AuthInterceptor("your_token"))
             .addInterceptor(RetryInterceptor())
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .writeTimeout(90, TimeUnit.SECONDS)
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             .build()
     }
 
