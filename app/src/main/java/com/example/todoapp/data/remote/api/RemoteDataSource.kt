@@ -3,9 +3,9 @@ package com.example.todoapp.data.remote.api
 import android.util.Log
 import com.example.todoapp.data.mappers.ApiDomainMapper
 import com.example.todoapp.data.model.TodoItem
-import com.example.todoapp.data.remote.model.TodoItemRequest
-import com.example.todoapp.data.remote.model.TodoListRequest
-import com.example.todoapp.data.remote.model.TodoResponse
+import com.example.todoapp.data.remote.model.requests.TodoItemRequest
+import com.example.todoapp.data.remote.model.requests.TodoListRequest
+import com.example.todoapp.data.remote.model.responses.TodoResponse
 import com.example.todoapp.di.component.AppScope
 import retrofit2.Response
 import javax.inject.Inject
@@ -15,6 +15,7 @@ class RemoteDataSource @Inject constructor(
     private val apiService: TodoApiService,
     private val apiDomainMapper: ApiDomainMapper
 ) {
+    // todo: probably create revision interceptor
     @Volatile
     private var _revision: Int = 0
 

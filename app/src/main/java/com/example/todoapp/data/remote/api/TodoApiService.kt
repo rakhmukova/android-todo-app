@@ -1,8 +1,8 @@
 package com.example.todoapp.data.remote.api
 
-import com.example.todoapp.data.remote.model.TodoItemRequest
-import com.example.todoapp.data.remote.model.TodoListRequest
-import com.example.todoapp.data.remote.model.TodoResponse
+import com.example.todoapp.data.remote.model.requests.TodoItemRequest
+import com.example.todoapp.data.remote.model.requests.TodoListRequest
+import com.example.todoapp.data.remote.model.responses.TodoResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

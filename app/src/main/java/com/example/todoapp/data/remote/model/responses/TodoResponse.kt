@@ -1,4 +1,6 @@
-package com.example.todoapp.data.remote.model
+package com.example.todoapp.data.remote.model.responses
+
+import com.example.todoapp.data.remote.model.ApiTodoItem
 
 open class TodoResponse(
     val status: String,
