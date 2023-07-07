@@ -1,4 +1,4 @@
-package com.example.todoapp.data.mappers
+package com.example.todoapp.data.util
 
 import com.example.todoapp.di.component.AppScope
 import java.util.Date

@@ -1,4 +1,4 @@
-package com.example.todoapp.data
+package com.example.todoapp.data.util
 
 import android.content.SharedPreferences
 import android.util.Log

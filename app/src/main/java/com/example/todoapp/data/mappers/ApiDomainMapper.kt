@@ -1,10 +1,11 @@
 package com.example.todoapp.data.mappers
 
 import android.nfc.FormatException
-import com.example.todoapp.data.DeviceIdManager
+import com.example.todoapp.data.util.DeviceIdManager
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.model.ApiTodoItem
+import com.example.todoapp.data.util.DateConverter
 import com.example.todoapp.di.component.AppScope
 import javax.inject.Inject
 
