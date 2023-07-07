@@ -9,6 +9,9 @@ import com.example.todoapp.di.component.AppScope
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+/**
+ * Class providing setup for background workers in the application.
+ */
 @AppScope
 class WorkerProvider @Inject constructor(
     private val workManager: WorkManager

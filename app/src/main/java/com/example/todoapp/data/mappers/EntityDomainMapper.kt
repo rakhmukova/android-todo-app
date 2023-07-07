@@ -5,6 +5,9 @@ import com.example.todoapp.data.model.TodoItem
 import dagger.Reusable
 import javax.inject.Inject
 
+/**
+ * Mapper class for converting entity models to domain models of TodoItem and vice versa.
+ */
 @Reusable
 class EntityDomainMapper @Inject constructor() {
     fun toDomainModel(todoItemEntity: TodoItemEntity): TodoItem {

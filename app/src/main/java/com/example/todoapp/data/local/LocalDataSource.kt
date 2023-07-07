@@ -8,6 +8,9 @@ import dagger.Reusable
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+/**
+ * Local data source for accessing and manipulating items in the local database.
+ */
 @Reusable
 class LocalDataSource @Inject constructor(
     private val todoItemDao: TodoItemDao,

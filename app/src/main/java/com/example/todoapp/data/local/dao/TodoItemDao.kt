@@ -10,6 +10,10 @@ import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.di.component.AppScope
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * DAO interface for the TodoItemEntity class
+ * providing methods for interacting with the local database table 'todo_items'.
+ */
 @AppScope
 @Dao
 interface TodoItemDao {

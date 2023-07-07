@@ -1,5 +1,8 @@
 package com.example.todoapp.data
 
+/**
+ * Sealed class representing the state of a data operation.
+ */
 sealed class DataState<T>(
     val data: T? = null,
     val throwable: Throwable? = null

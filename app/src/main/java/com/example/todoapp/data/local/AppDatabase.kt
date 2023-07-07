@@ -7,6 +7,9 @@ import com.example.todoapp.data.local.dao.TodoItemDao
 import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.di.component.AppScope
 
+/**
+ * Database class for the TodoApp application.
+ */
 @AppScope
 @Database(entities = [TodoItemEntity::class], version = 7, exportSchema = false)
 @TypeConverters(DateConverter::class)

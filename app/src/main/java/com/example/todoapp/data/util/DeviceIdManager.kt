@@ -10,6 +10,9 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Class responsible for generating and retrieving a unique device ID for the application.
+ */
 @AppScope
 class DeviceIdManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 

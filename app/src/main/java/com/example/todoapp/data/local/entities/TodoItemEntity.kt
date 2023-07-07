@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 import com.example.todoapp.data.model.Priority
 import java.util.*
 
+/**
+ * Entity class representing an item in the local database.
+ */
 @Entity(tableName = "todo_items")
 data class TodoItemEntity(
     @PrimaryKey val id: String,

@@ -2,6 +2,9 @@ package com.example.todoapp.data.model
 
 import java.util.*
 
+/**
+ * Data class representing a single task or item in a todolist.
+ */
 data class TodoItem(
     val id: String = UUID.randomUUID().toString(),
     val text: String = "",
