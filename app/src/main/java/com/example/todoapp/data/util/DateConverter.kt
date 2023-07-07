@@ -1,10 +1,10 @@
 package com.example.todoapp.data.util
 
-import com.example.todoapp.di.component.AppScope
+import dagger.Reusable
 import java.util.Date
 import javax.inject.Inject
 
-@AppScope
+@Reusable
 class DateConverter @Inject constructor() {
     fun fromDate(date: Date): Long {
         return date.time

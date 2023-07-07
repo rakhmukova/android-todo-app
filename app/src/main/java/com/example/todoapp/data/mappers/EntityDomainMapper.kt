@@ -2,10 +2,10 @@ package com.example.todoapp.data.mappers
 
 import com.example.todoapp.data.local.entities.TodoItemEntity
 import com.example.todoapp.data.model.TodoItem
-import com.example.todoapp.di.component.AppScope
+import dagger.Reusable
 import javax.inject.Inject
 
-@AppScope
+@Reusable
 class EntityDomainMapper @Inject constructor() {
     fun toDomainModel(todoItemEntity: TodoItemEntity): TodoItem {
         return TodoItem(
