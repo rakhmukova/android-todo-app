@@ -45,36 +45,11 @@ class MainActivity : AppCompatActivity() {
         setupViewModel()
     }
 
+    // todo: pass only message to activity?
     private fun setupViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.addTodoItemState.collectLatest {
-                    when (it) {
-                        is DataState.Error -> {
-                            showSnackbar(getString(R.string.update_error))
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.removeTodoItemState.collectLatest {
-                    when (it) {
-                        is DataState.Error -> {
-                            showSnackbar(getString(R.string.update_error))
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.updateTodoItemState.collectLatest {
+                mainViewModel.changeItemState.collectLatest {
                     when (it) {
                         is DataState.Error -> {
                             showSnackbar(getString(R.string.update_error))
@@ -89,10 +64,10 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.syncWithBackend.collect {
                     when (it) {
-                        true -> {}
                         false -> {
                             showSnackbar(getString(R.string.upload_error))
                         }
+                        true -> {}
                     }
                 }
             }

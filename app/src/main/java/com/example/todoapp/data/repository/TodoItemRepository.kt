@@ -1,5 +1,6 @@
 package com.example.todoapp.data.repository
 
+import android.util.Log
 import com.example.todoapp.data.DataState
 import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
@@ -18,6 +19,7 @@ class TodoItemRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
 ) {
+    // todo: create repo to handle different errors?
     private val _syncWithBackend = MutableStateFlow(false)
     val syncWithBackend: Flow<Boolean>
         get() = _syncWithBackend
@@ -26,77 +28,127 @@ class TodoItemRepository @Inject constructor(
     val todoItems: Flow<List<TodoItem>>
         get() = _todoItems
 
-    private val _addTodoItemState = MutableStateFlow<DataState<Unit>>(DataState.Loading())
-    val addTodoItemState: StateFlow<DataState<Unit>>
-        get() = _addTodoItemState
+    private val _changeItemState = MutableStateFlow<DataState<ChangeItemAction>>(DataState.Loading())
+    val changeItemState: StateFlow<DataState<ChangeItemAction>>
+        get() = _changeItemState
 
-    private val _removeTodoItemState = MutableStateFlow<DataState<Unit>>(DataState.Loading())
-    val removeTodoItemState: StateFlow<DataState<Unit>>
-        get() = _removeTodoItemState
+    private val _authState = MutableStateFlow(true)
+    val authState: StateFlow<Boolean>
+        get() = _authState
 
-    private val _updateTodoItemState = MutableStateFlow<DataState<Unit>>(DataState.Loading())
-    val updateTodoItemState: StateFlow<DataState<Unit>>
-        get() = _updateTodoItemState
+    private suspend fun tryAndHandleNetworkException(
+        block: suspend () -> Unit,
+        unauthorizedBlock: suspend (Exception) -> Unit = {},
+        notSyncDataBlock: suspend (Exception) -> Unit = {},
+        networkErrorBlock: suspend (Exception) -> Unit = {},
+        errorBlock: suspend (Exception) -> Unit = {}
+    ) = withContext(Dispatchers.IO) {
+        // todo: make errorBlock run on other errors
+        try {
+            block()
+        } catch (e: ApiException) {
+            Log.d(TAG, "handleNetworkException: ${e.message}", e)
+            when (e) {
+                is ApiException.UnauthorizedException -> {
+                    unauthorizedBlock(e)
+                }
+                is ApiException.NotSynchronizedDataException -> {
+                    notSyncDataBlock(e)
+                }
+                is ApiException.NetworkException -> {
+                    networkErrorBlock(e)
+                }
+                else -> {}
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "handleNetworkException: ${e.message}", e)
+            errorBlock(e)
+        }
+    }
 
     suspend fun loadData() = withContext(Dispatchers.IO) {
-        try {
-            val items = remoteDataSource.getTodoItems()
-            localDataSource.updateTodoItems(items)
-            _syncWithBackend.value = true
-        } catch (e: Throwable) {
-            _syncWithBackend.value = false
-        }
+        tryAndHandleNetworkException(
+            block = {
+                val items = remoteDataSource.getTodoItems()
+                localDataSource.updateTodoItems(items)
+                _syncWithBackend.value = true
+            },
+            errorBlock = {
+                _syncWithBackend.value = false
+            }
+        )
     }
 
     suspend fun syncTodoItems() = withContext(Dispatchers.IO) {
-        try {
-            val remoteItems = remoteDataSource.getTodoItems()
-            localDataSource.updateTodoItems(remoteItems)
-            val localItems = localDataSource.getTodoItems()
-            remoteDataSource.updateTodoItems(localItems)
-            _syncWithBackend.value = true
-        } catch (e: Exception) {
-            _syncWithBackend.value = false
-        }
+        tryAndHandleNetworkException(
+            block = {
+                val remoteItems = remoteDataSource.getTodoItems()
+                localDataSource.updateTodoItems(remoteItems)
+                val localItems = localDataSource.getTodoItems()
+                remoteDataSource.updateTodoItems(localItems)
+                _syncWithBackend.value = true
+            },
+            errorBlock = {
+                _syncWithBackend.value = false
+            }
+        )
     }
 
+    // todo: generalize code
     suspend fun addTodoItem(todoItem: TodoItem) = withContext(Dispatchers.IO) {
-        try {
+        val block: suspend () -> Unit = {
             localDataSource.addTodoItem(todoItem)
             remoteDataSource.addTodoItem(todoItem)
-            _addTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ApiException.NotSynchronizedDataException) {
-            // todo: handle wrong revision - syncTodoItems
-        } catch (e: Throwable) {
-            _addTodoItemState.value = DataState.Error(e)
+            _changeItemState.value = DataState.Success(ChangeItemAction.ADD)
         }
+        tryAndHandleNetworkException(
+            block = block,
+            networkErrorBlock = {
+                _changeItemState.value = DataState.Error(it, ChangeItemAction.ADD)
+            },
+            // todo
+            notSyncDataBlock = {
+                tryAndHandleNetworkException(
+                    block = {
+                        syncTodoItems()
+                        block()
+                    }
+                )
+            },
+        )
     }
 
     suspend fun removeTodoItem(itemId: String) = withContext(Dispatchers.IO) {
-        try {
-            localDataSource.removeTodoItem(itemId)
-            remoteDataSource.removeTodoItem(itemId)
-            _removeTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ApiException.NotSynchronizedDataException) {
-            // todo: handle wrong revision - syncTodoItems
-        } catch (e: Throwable) {
-            _removeTodoItemState.value = DataState.Error(e)
-        }
+        tryAndHandleNetworkException(
+            block = {
+                localDataSource.removeTodoItem(itemId)
+                remoteDataSource.removeTodoItem(itemId)
+                _changeItemState.value = DataState.Success(ChangeItemAction.DELETE)
+            },
+            networkErrorBlock = {
+                _changeItemState.value = DataState.Error(it, ChangeItemAction.DELETE)
+            },
+        )
     }
 
     suspend fun updateTodoItem(todoItem: TodoItem) = withContext(Dispatchers.IO) {
-        try {
-            localDataSource.updateTodoItem(todoItem)
-            remoteDataSource.updateTodoItem(todoItem)
-            _updateTodoItemState.value = DataState.Success(Unit)
-        } catch (e: ApiException.NotSynchronizedDataException) {
-            // todo: handle wrong revision - syncTodoItems
-        } catch (e: Throwable) {
-            _updateTodoItemState.value = DataState.Error(e)
-        }
+        tryAndHandleNetworkException(
+            block = {
+                localDataSource.updateTodoItem(todoItem)
+                remoteDataSource.updateTodoItem(todoItem)
+                _changeItemState.value = DataState.Success(ChangeItemAction.UPDATE)
+            },
+            networkErrorBlock = {
+                _changeItemState.value = DataState.Error(it, ChangeItemAction.UPDATE)
+            },
+        )
     }
 
     suspend fun findById(itemId: String): TodoItem? = withContext(Dispatchers.IO) {
         return@withContext localDataSource.findById(itemId)
+    }
+
+    companion object {
+        private const val TAG = "TodoItemRepository"
     }
 }
