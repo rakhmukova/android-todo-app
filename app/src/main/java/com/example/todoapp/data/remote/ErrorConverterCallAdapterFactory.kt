@@ -35,7 +35,9 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
         override fun enqueue(callback: Callback<T>) {
             delegate.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
-                    if (response.isSuccessful && response.code() in 200..299) {
+                    if (response.isSuccessful && response.code()
+                        in HttpStatusCodes.SUCCESS_RANGE_START..HttpStatusCodes.SUCCESS_RANGE_END
+                    ) {
                         callback.onResponse(call, response)
                     } else {
                         callback.onFailure(call, convert(HttpException(response)))
@@ -81,15 +83,16 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
         return when (throwable) {
             is HttpException -> {
                 when (throwable.code()) {
-                    400 -> NotSynchronizedDataException()
-                    401 -> UnauthorizedException()
-                    404 -> ElementNotFoundException()
-                    500 -> ServerException()
+                    HttpStatusCodes.NOT_SYNCHRONIZED_ERROR -> NotSynchronizedDataException()
+                    HttpStatusCodes.UNAUTHORIZED_ERROR -> UnauthorizedException()
+                    HttpStatusCodes.ELEMENT_NOT_FOUND_ERROR -> ElementNotFoundException()
+                    in HttpStatusCodes.SERVER_ERROR_RANGE_START..HttpStatusCodes.SERVER_ERROR_RANGE_END
+                    -> ServerException()
                     else -> NetworkException(throwable)
                 }
             }
             is IOException -> NetworkException(throwable)
-            else -> Exception()
+            else -> Exception("Unknown Error", throwable)
         }
     }
 
