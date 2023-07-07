@@ -113,11 +113,5 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     override fun onTodoItemCheckedChanged(todoItem: TodoItem, isChecked: Boolean, position: Int) {
         todoListViewModel.updateChecked(todoItem, isChecked)
-        // TODO: fix when visibility on / off
-        // todoAdapter.notifyItemChanged(position)
-    }
-
-    companion object {
-        private const val TAG = "TodoItemsFragment"
     }
 }
