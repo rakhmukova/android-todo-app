@@ -40,7 +40,6 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         component = (activity as MainActivity).activityComponent.todoItemsFragmentComponent
         component.inject(this)
     }
@@ -64,7 +63,6 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         setupViewModel()
         setupRecyclerView()
         setupCreateTaskButton()
-        setupVisibilityToggleButton()
     }
 
     private fun setupViewModel() {
@@ -105,12 +103,6 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     private fun setupCreateTaskButton() {
         binding.createTaskButton.setOnClickListener {
             findNavController().navigate(R.id.action_TodoItemsFragment_to_AddItemFragment)
-        }
-    }
-
-    private fun setupVisibilityToggleButton() {
-        binding.visibilityToggleButton.setOnCheckedChangeListener { _, isChecked ->
-//            todoListViewModel.setShowOnlyCompletedTasks(!isChecked)
         }
     }
 
