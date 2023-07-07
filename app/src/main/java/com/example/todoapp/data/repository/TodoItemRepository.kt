@@ -38,22 +38,23 @@ class TodoItemRepository @Inject constructor(
 
     private suspend fun tryAndHandleNetworkException(
         block: suspend () -> Unit,
-        unauthorizedBlock: suspend (Exception) -> Unit = {},
-        notSyncDataBlock: suspend (Exception) -> Unit = {},
+        unauthorizedErrorBlock: suspend (Exception) -> Unit = {},
+        notSyncDataErrorBlock: suspend (Exception) -> Unit = {},
         networkErrorBlock: suspend (Exception) -> Unit = {},
         errorBlock: suspend (Exception) -> Unit = {}
     ) = withContext(Dispatchers.IO) {
         // todo: make errorBlock run on other errors
         try {
             block()
+            Log.d(TAG, "tryAndHandleNetworkException: Success")
         } catch (e: ApiException) {
-            Log.d(TAG, "handleNetworkException: ${e.message}", e)
+            Log.d(TAG, "tryAndHandleNetworkException: ${e.message}", e)
             when (e) {
                 is ApiException.UnauthorizedException -> {
-                    unauthorizedBlock(e)
+                    unauthorizedErrorBlock(e)
                 }
                 is ApiException.NotSynchronizedDataException -> {
-                    notSyncDataBlock(e)
+                    notSyncDataErrorBlock(e)
                 }
                 is ApiException.NetworkException -> {
                     networkErrorBlock(e)
@@ -61,7 +62,7 @@ class TodoItemRepository @Inject constructor(
                 else -> {}
             }
         } catch (e: Exception) {
-            Log.d(TAG, "handleNetworkException: ${e.message}", e)
+            Log.d(TAG, "tryAndHandleNetworkException: ${e.message}", e)
             errorBlock(e)
         }
     }
@@ -107,7 +108,7 @@ class TodoItemRepository @Inject constructor(
                 _changeItemState.value = DataState.Error(it, ChangeItemAction.ADD)
             },
             // todo
-            notSyncDataBlock = {
+            notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
                     block = {
                         syncTodoItems()
@@ -119,27 +120,45 @@ class TodoItemRepository @Inject constructor(
     }
 
     suspend fun removeTodoItem(itemId: String) = withContext(Dispatchers.IO) {
+        val block: suspend () -> Unit = {
+            localDataSource.removeTodoItem(itemId)
+            remoteDataSource.removeTodoItem(itemId)
+            _changeItemState.value = DataState.Success(ChangeItemAction.DELETE)
+        }
         tryAndHandleNetworkException(
-            block = {
-                localDataSource.removeTodoItem(itemId)
-                remoteDataSource.removeTodoItem(itemId)
-                _changeItemState.value = DataState.Success(ChangeItemAction.DELETE)
-            },
+            block = block,
             networkErrorBlock = {
                 _changeItemState.value = DataState.Error(it, ChangeItemAction.DELETE)
+            },
+            notSyncDataErrorBlock = {
+                tryAndHandleNetworkException(
+                    block = {
+                        syncTodoItems()
+                        block()
+                    }
+                )
             },
         )
     }
 
     suspend fun updateTodoItem(todoItem: TodoItem) = withContext(Dispatchers.IO) {
+        val block: suspend () -> Unit = {
+            localDataSource.updateTodoItem(todoItem)
+            remoteDataSource.updateTodoItem(todoItem)
+            _changeItemState.value = DataState.Success(ChangeItemAction.UPDATE)
+        }
         tryAndHandleNetworkException(
-            block = {
-                localDataSource.updateTodoItem(todoItem)
-                remoteDataSource.updateTodoItem(todoItem)
-                _changeItemState.value = DataState.Success(ChangeItemAction.UPDATE)
-            },
+            block = block,
             networkErrorBlock = {
                 _changeItemState.value = DataState.Error(it, ChangeItemAction.UPDATE)
+            },
+            notSyncDataErrorBlock = {
+                tryAndHandleNetworkException(
+                    block = {
+                        syncTodoItems()
+                        block()
+                    }
+                )
             },
         )
     }
