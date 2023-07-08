@@ -15,7 +15,6 @@ import kotlin.reflect.KClass
 @MapKey
 annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
-// todo: add scopes
 @Module
 interface ViewModelModule {
     @Binds
