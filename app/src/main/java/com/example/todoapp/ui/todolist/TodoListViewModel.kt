@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * ViewModel class for managing the list of items.
+ */
 class TodoListViewModel @Inject constructor(private val repository: TodoItemRepository) : ViewModel() {
     private val _showOnlyCompletedTasks: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _completedTasksCount: MutableStateFlow<Int> = MutableStateFlow(0)

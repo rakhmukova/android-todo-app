@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * ViewModel class for editing an item.
+ */
 class EditTodoItemViewModel @Inject constructor(private val repository: TodoItemRepository) : ViewModel() {
 
     private val _todoItem = MutableStateFlow(TodoItem())

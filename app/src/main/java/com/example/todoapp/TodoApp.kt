@@ -1,13 +1,16 @@
 package com.example.todoapp
 
 import android.app.Application
-import com.example.todoapp.data.util.ConnectivityMonitoring
 import com.example.todoapp.data.repository.TodoItemRepository
+import com.example.todoapp.data.util.ConnectivityMonitoring
 import com.example.todoapp.data.workers.WorkerProvider
 import com.example.todoapp.di.component.AppComponent
 import com.example.todoapp.di.component.DaggerAppComponent
 import javax.inject.Inject
 
+/**
+ * The application class for the TodoApp.
+ */
 class TodoApp : Application() {
 
     lateinit var appComponent: AppComponent
@@ -29,7 +32,6 @@ class TodoApp : Application() {
         appComponent.inject(this)
 
         connectivityMonitoring.setupNetworkListener()
-        // todo: use factory
         workerProvider.setupWorkers()
     }
 }

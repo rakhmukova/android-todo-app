@@ -18,6 +18,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * The main activity of the TodoApp.
+ */
 class MainActivity : AppCompatActivity() {
 
     lateinit var activityComponent: ActivityComponent

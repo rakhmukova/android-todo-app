@@ -28,6 +28,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * A fragment for editing a todoItem.
+ */
 class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
     private lateinit var component: EditTodoItemFragmentComponent
@@ -102,30 +105,31 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
         highElement.title = s
     }
 
+    private fun handleMenuChoice(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.menu_item_no_importance -> {
+                editTodoItemViewModel.updatePriority(Priority.COMMON)
+                true
+            }
+            R.id.menu_item_low_importance -> {
+                editTodoItemViewModel.updatePriority(Priority.LOW)
+                true
+            }
+            R.id.menu_item_high_importance -> {
+                editTodoItemViewModel.updatePriority(Priority.HIGH)
+                true
+            }
+            else -> false
+        }
+    }
+
     private fun setupPriorityMenu() {
         binding.importanceValue.setOnClickListener {
             val popupMenu = PopupMenu(requireContext(), binding.importanceTitle)
             popupMenu.menuInflater.inflate(R.menu.importance_menu, popupMenu.menu)
             highlightHighImportanceElement(popupMenu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_item_no_importance -> {
-                        editTodoItemViewModel.updatePriority(Priority.COMMON)
-                        true
-                    }
-
-                    R.id.menu_item_low_importance -> {
-                        editTodoItemViewModel.updatePriority(Priority.LOW)
-                        true
-                    }
-
-                    R.id.menu_item_high_importance -> {
-                        editTodoItemViewModel.updatePriority(Priority.HIGH)
-                        true
-                    }
-
-                    else -> false
-                }
+                handleMenuChoice(menuItem)
             }
             popupMenu.show()
         }
@@ -152,8 +156,16 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = createDatePickerDialog(year, month, day)
 
-        val datePickerDialog = DatePickerDialog(
+        datePickerDialog.setOnCancelListener {
+            binding.switchButton.isChecked = false
+        }
+        datePickerDialog.show()
+    }
+
+    private fun createDatePickerDialog(year: Int, month: Int, day: Int): DatePickerDialog {
+        return DatePickerDialog(
             requireContext(),
             R.style.DatePickerStyle,
             { _, selectedYear, selectedMonth, selectedDay ->
@@ -166,12 +178,6 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
             month,
             day
         )
-
-        datePickerDialog.setOnCancelListener {
-            binding.switchButton.isChecked = false
-        }
-
-        datePickerDialog.show()
     }
 
     private fun setupDatePicker() {

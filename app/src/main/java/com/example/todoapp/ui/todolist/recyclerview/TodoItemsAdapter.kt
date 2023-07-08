@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.TodoItemBinding
 
+/**
+ * Adapter class for displaying a list of todoItems in a RecyclerView.
+ *
+ */
 class TodoItemsAdapter(
     private val callbacks: TodoItemChangeCallbacks
 ) : ListAdapter<TodoItem, TodoItemViewHolder>(DiffUtilCallback()) {

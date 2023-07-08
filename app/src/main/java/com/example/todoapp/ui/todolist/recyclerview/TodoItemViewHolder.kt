@@ -9,6 +9,9 @@ import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.TodoItemBinding
 import com.example.todoapp.ui.util.DateParser
 
+/**
+ * ViewHolder class for displaying an item in the RecyclerView.
+ */
 class TodoItemViewHolder(
     private val binding: TodoItemBinding,
     private val callbacks: TodoItemChangeCallbacks

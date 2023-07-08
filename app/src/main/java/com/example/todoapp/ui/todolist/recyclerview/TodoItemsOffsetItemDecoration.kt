@@ -4,6 +4,9 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Item decoration class for adding offsets to the items in a RecyclerView.
+ */
 class TodoItemsOffsetItemDecoration(
     private val leftOffset: Int = 0,
     private val topOffset: Int = 0,

@@ -24,11 +24,12 @@ import com.example.todoapp.ui.todolist.recyclerview.TodoItemsOffsetItemDecoratio
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * A fragment for displaying a list of items.
+ */
 class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
 
     private lateinit var component: TodoItemsFragmentComponent
-
-    // todo: get factory from fragment component
     private val todoListViewModel: TodoListViewModel by viewModels {
         (activity as MainActivity).activityComponent.viewModelFactory
     }
