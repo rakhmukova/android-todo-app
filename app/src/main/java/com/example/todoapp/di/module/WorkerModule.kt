@@ -6,6 +6,9 @@ import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 
+/**
+ * Dagger module for providing workers-related dependencies.
+ */
 @Module
 class WorkerModule {
     @Provides

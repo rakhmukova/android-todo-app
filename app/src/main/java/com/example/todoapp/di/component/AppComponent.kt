@@ -10,6 +10,9 @@ import com.example.todoapp.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
 
+/**
+ * Dagger component for app-level dependencies.
+ */
 @AppScope
 @Component(
     modules = [

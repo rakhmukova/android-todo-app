@@ -15,6 +15,9 @@ import kotlin.reflect.KClass
 @MapKey
 annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
+/**
+ * Dagger module for providing view model-related dependencies.
+ */
 @Module
 interface ViewModelModule {
     @Binds

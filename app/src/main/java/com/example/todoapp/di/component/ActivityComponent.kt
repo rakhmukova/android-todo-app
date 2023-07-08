@@ -6,6 +6,9 @@ import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.main.MainActivity
 import dagger.Subcomponent
 
+/**
+ * Dagger subcomponent for activity-level dependencies.
+ */
 @ActivityScope
 @Subcomponent(modules = [ViewModelModule::class])
 interface ActivityComponent {

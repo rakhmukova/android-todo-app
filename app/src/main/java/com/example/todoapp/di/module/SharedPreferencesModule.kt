@@ -6,6 +6,9 @@ import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 
+/**
+ * Dagger module for providing SharedPreferences-related dependencies.
+ */
 @Module
 class SharedPreferencesModule {
     @Provides

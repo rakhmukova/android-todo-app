@@ -8,6 +8,9 @@ import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 
+/**
+ * Dagger module for providing database-related dependencies.
+ */
 @Module
 class DatabaseModule {
     @Provides
