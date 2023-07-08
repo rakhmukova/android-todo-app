@@ -3,11 +3,11 @@ package com.example.todoapp.data.remote.api
 import android.util.Log
 import com.example.todoapp.data.mappers.ApiDomainMapper
 import com.example.todoapp.data.model.TodoItem
-import com.example.todoapp.data.remote.model.requests.TodoItemRequest
-import com.example.todoapp.data.remote.model.requests.TodoListRequest
-import com.example.todoapp.data.remote.model.responses.TodoResponse
+import com.example.todoapp.data.remote.model.requests.TodoItemRequestBody
+import com.example.todoapp.data.remote.model.requests.TodoListRequestBody
+import com.example.todoapp.data.remote.model.responses.TodoItemResponseBody
+import com.example.todoapp.data.remote.model.responses.TodoListResponseBody
 import com.example.todoapp.di.scope.AppScope
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -22,46 +22,46 @@ class RemoteDataSource @Inject constructor(
     @Volatile
     private var _revision: Int = 0
 
-    private fun updateRevision(response: Response<out TodoResponse>) {
-        val body = response.body()
-        if (body != null) {
-            _revision = body.revision
-            Log.d(TAG, "revision: $_revision")
-        }
+    private fun updateRevision(body: TodoItemResponseBody) {
+        _revision = body.revision
+        Log.d(TAG, "revision: $_revision")
+    }
+
+    private fun updateRevision(body: TodoListResponseBody) {
+        _revision = body.revision
+        Log.d(TAG, "revision: $_revision")
     }
 
     suspend fun getTodoItems(): List<TodoItem> {
         val response = apiService.getAllTodoItems()
-        updateRevision(response)
-        return response.body()?.list?.map(apiDomainMapper::toDomainModel) ?: emptyList()
+        val body = response.body()
+        body?.let { updateRevision(it) }
+        return body?.list?.map(apiDomainMapper::toDomainModel) ?: emptyList()
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        apiService.updateTodoItems(_revision, TodoListRequest(todoItems.map(apiDomainMapper::toApiModel)))
+        apiService.updateTodoItems(_revision, TodoListRequestBody(todoItems.map(apiDomainMapper::toApiModel)))
     }
 
-    suspend fun addTodoItem(todoItem: TodoItem): Response<TodoResponse.Item> {
+    suspend fun addTodoItem(todoItem: TodoItem) {
         val response = apiService.addTodoItem(
             _revision,
-            TodoItemRequest(apiDomainMapper.toApiModel(todoItem))
+            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem))
         )
-        updateRevision(response)
-        return response
+        response.body()?.let { updateRevision(it) }
     }
 
-    suspend fun updateTodoItem(todoItem: TodoItem): Response<TodoResponse.Item> {
+    suspend fun updateTodoItem(todoItem: TodoItem) {
         val response = apiService.updateTodoItem(
             todoItem.id,
-            TodoItemRequest(apiDomainMapper.toApiModel(todoItem))
+            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem))
         )
-        updateRevision(response)
-        return response
+        response.body()?.let { updateRevision(it) }
     }
 
-    suspend fun removeTodoItem(itemId: String): Response<TodoResponse.Item> {
+    suspend fun removeTodoItem(itemId: String) {
         val response = apiService.removeTodoItem(itemId)
-        updateRevision(response)
-        return response
+        response.body()?.let { updateRevision(it) }
     }
 
     companion object {
