@@ -6,11 +6,16 @@ import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.api.RemoteDataSource
 import com.example.todoapp.data.remote.exceptions.ApiException
+import com.example.todoapp.data.util.ConnectivityMonitoring
+import com.example.todoapp.data.util.NetworkStatus
 import com.example.todoapp.di.scope.AppScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -20,7 +25,8 @@ import javax.inject.Inject
 @AppScope
 class TodoItemRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val connectivityMonitoring: ConnectivityMonitoring
 ) {
     // todo: create repo to handle different errors?
     private val _syncWithBackend = MutableStateFlow(true)
@@ -34,6 +40,17 @@ class TodoItemRepository @Inject constructor(
     private val _changeItemState = MutableStateFlow<DataResult<ChangeItemAction>>(DataResult.Loading())
     val changeItemState: StateFlow<DataResult<ChangeItemAction>>
         get() = _changeItemState
+
+    init {
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope.launch {
+            connectivityMonitoring.networkStatus.collectLatest {
+                if (it == NetworkStatus.AVAILABLE) {
+                    syncTodoItems()
+                }
+            }
+        }
+    }
 
     private suspend fun tryAndHandleNetworkException(
         block: suspend () -> Unit,

@@ -2,32 +2,33 @@ package com.example.todoapp.data.util
 
 import android.net.ConnectivityManager
 import android.net.Network
-import com.example.todoapp.data.repository.TodoItemRepository
-import dagger.Reusable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.todoapp.di.scope.AppScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 /**
- * Utility class that monitors network connectivity and triggers synchronization
- * with the backend when the network becomes available.
+ * Utility class that monitors network connectivity.
  */
-@Reusable
+@AppScope
 class ConnectivityMonitoring @Inject constructor(
-    private val connectivityManager: ConnectivityManager,
-    private val todoItemRepository: TodoItemRepository
+    private val connectivityManager: ConnectivityManager
 ) {
+    private val _networkStatus = MutableStateFlow(NetworkStatus.AVAILABLE)
+    val networkStatus: StateFlow<NetworkStatus>
+        get() = _networkStatus
+
     fun setupNetworkListener() {
         val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
-                val coroutineScope = CoroutineScope(Dispatchers.IO)
-                coroutineScope.launch {
-                    todoItemRepository.syncTodoItems()
-                }
+                _networkStatus.value = NetworkStatus.AVAILABLE
             }
-            // todo: return flow and collect in repo
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                _networkStatus.value = NetworkStatus.LOST
+            }
         }
 
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
