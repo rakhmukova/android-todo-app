@@ -1,9 +1,8 @@
 package com.example.todoapp
 
 import android.app.Application
-import com.example.todoapp.data.repository.TodoItemRepository
 import com.example.todoapp.data.util.ConnectivityMonitoring
-import com.example.todoapp.data.workers.WorkerProvider
+import com.example.todoapp.data.workers.WorkerSetupManager
 import com.example.todoapp.di.component.AppComponent
 import com.example.todoapp.di.component.DaggerAppComponent
 import javax.inject.Inject
@@ -17,10 +16,7 @@ class TodoApp : Application() {
         private set
 
     @Inject
-    lateinit var todoItemRepository: TodoItemRepository
-
-    @Inject
-    lateinit var workerProvider: WorkerProvider
+    lateinit var workerSetupManager: WorkerSetupManager
 
     @Inject
     lateinit var connectivityMonitoring: ConnectivityMonitoring
@@ -31,7 +27,7 @@ class TodoApp : Application() {
         appComponent = DaggerAppComponent.factory().create(this)
         appComponent.inject(this)
 
+        workerSetupManager.setupWorkers()
         connectivityMonitoring.setupNetworkListener()
-        workerProvider.setupWorkers()
     }
 }

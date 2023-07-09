@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 /**
  * Worker class for data synchronization.
  */
-class DataSynchronizationWorker(
+class DataSyncWorker(
     context: Context,
     params: WorkerParameters,
     private val repository: TodoItemRepository

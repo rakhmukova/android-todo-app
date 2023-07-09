@@ -5,7 +5,6 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.di.module.DatabaseModule
 import com.example.todoapp.di.module.NetworkModule
 import com.example.todoapp.di.module.SharedPreferencesModule
-import com.example.todoapp.di.module.WorkerModule
 import com.example.todoapp.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
@@ -18,7 +17,6 @@ import dagger.Component
     modules = [
         DatabaseModule::class,
         NetworkModule::class,
-        WorkerModule::class,
         SharedPreferencesModule::class
     ]
 )
