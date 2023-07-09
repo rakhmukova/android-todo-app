@@ -9,9 +9,9 @@ import com.example.todoapp.data.model.Priority
 object StringPriorityMapper {
     fun toPriority(s: String): Priority {
         return when (s) {
-            "low" -> Priority.LOW
-            "basic" -> Priority.COMMON
-            "important" -> Priority.HIGH
+            LOW -> Priority.LOW
+            COMMON -> Priority.COMMON
+            HIGH -> Priority.HIGH
             else -> {
                 throw FormatException("Unrecognised Priority Type")
             }
@@ -20,9 +20,13 @@ object StringPriorityMapper {
 
     fun fromPriority(priority: Priority): String {
         return when (priority) {
-            Priority.HIGH -> "important"
-            Priority.COMMON -> "basic"
-            Priority.LOW -> "low"
+            Priority.LOW -> LOW
+            Priority.COMMON -> COMMON
+            Priority.HIGH -> HIGH
         }
     }
+
+    private const val LOW = "low"
+    private const val COMMON = "basic"
+    private const val HIGH = "important"
 }
