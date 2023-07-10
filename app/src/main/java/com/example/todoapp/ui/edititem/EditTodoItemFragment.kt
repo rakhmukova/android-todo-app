@@ -125,14 +125,18 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
     private fun setupPriorityMenu() {
         binding.importanceValue.setOnClickListener {
-            val popupMenu = PopupMenu(requireContext(), binding.importanceTitle)
-            popupMenu.menuInflater.inflate(R.menu.importance_menu, popupMenu.menu)
-            highlightHighImportanceElement(popupMenu)
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                handleMenuChoice(menuItem)
-            }
-            popupMenu.show()
+            showPriorityMenu()
         }
+    }
+
+    private fun showPriorityMenu() {
+        val popupMenu = PopupMenu(requireContext(), binding.importanceTitle)
+        popupMenu.menuInflater.inflate(R.menu.importance_menu, popupMenu.menu)
+        highlightHighImportanceElement(popupMenu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            handleMenuChoice(menuItem)
+        }
+        popupMenu.show()
     }
 
     private fun setupButtons() {
