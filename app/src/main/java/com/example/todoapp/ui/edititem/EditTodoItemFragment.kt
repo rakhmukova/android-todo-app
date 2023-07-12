@@ -21,12 +21,14 @@ import com.example.todoapp.R
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.databinding.FragmentEditItemBinding
 import com.example.todoapp.di.component.EditTodoItemFragmentComponent
+import com.example.todoapp.ui.LambdaFactory
 import com.example.todoapp.ui.main.MainActivity
 import com.example.todoapp.ui.util.DateParser
 import com.example.todoapp.ui.util.PriorityMapper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 /**
  * A fragment for editing a todoItem.
@@ -34,9 +36,15 @@ import java.util.*
 class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
     private lateinit var component: EditTodoItemFragmentComponent
+    private lateinit var todoItemId: String
+
+    @Inject
+    lateinit var factory: EditTodoItemViewModel.Factory
 
     private val editTodoItemViewModel: EditTodoItemViewModel by viewModels {
-        (activity as MainActivity).activityComponent.viewModelFactory
+        LambdaFactory(this) { _ ->
+            factory.create(todoItemId)
+        }
     }
 
     private var _binding: FragmentEditItemBinding? = null
@@ -44,6 +52,10 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            todoItemId = it.getString(ARG_TODO_ITEM_ID, "")
+        }
 
         component = (activity as MainActivity).activityComponent.editTodoItemFragmentComponent
         component.inject(this)
@@ -89,7 +101,7 @@ class EditTodoItemFragment : Fragment(R.layout.fragment_edit_item) {
             }
         }
 
-        editTodoItemViewModel.createOrFind(arguments?.getString(ARG_TODO_ITEM_ID))
+//        editTodoItemViewModel.createOrFind(arguments?.getString(ARG_TODO_ITEM_ID))
         binding.switchButton.isChecked = editTodoItemViewModel.todoItem.value.deadline != null
     }
 

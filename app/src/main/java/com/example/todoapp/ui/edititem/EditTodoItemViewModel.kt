@@ -5,22 +5,31 @@ import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.repository.TodoItemRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
 /**
  * ViewModel class for editing an item.
  */
-class EditTodoItemViewModel @Inject constructor(private val repository: TodoItemRepository) : ViewModel() {
+class EditTodoItemViewModel @AssistedInject constructor(
+    private val repository: TodoItemRepository,
+    @Assisted private val todoItemId: String
+) : ViewModel() {
 
     private val _todoItem = MutableStateFlow(TodoItem())
     val todoItem: StateFlow<TodoItem> = _todoItem.asStateFlow()
 
     private var _isExisting: Boolean? = null
+
+    init {
+        createOrFind(todoItemId)
+    }
 
     fun updateDescription(description: String) {
         val currentTodoItem = _todoItem.value
@@ -61,20 +70,26 @@ class EditTodoItemViewModel @Inject constructor(private val repository: TodoItem
         }
     }
 
-    fun createOrFind(id: String?) {
-        if (id == null) {
+    private fun createOrFind(id: String) {
+        if (id == "") {
             _isExisting = false
             _todoItem.value = TodoItem()
         } else {
-            _isExisting = true
             viewModelScope.launch {
                 val todoItem = repository.findById(id)
                 if (todoItem == null) {
+                    _isExisting = false
                     _todoItem.value = TodoItem()
                 } else {
+                    _isExisting = true
                     _todoItem.value = todoItem
                 }
             }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(todoItemId: String): EditTodoItemViewModel
     }
 }
