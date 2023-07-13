@@ -3,7 +3,6 @@ package com.example.todoapp.data.mappers
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.model.ApiTodoItem
 import com.example.todoapp.data.util.DateConverter
-import com.example.todoapp.data.util.DeviceIdManager
 import com.example.todoapp.data.util.StringPriorityMapper
 import dagger.Reusable
 import javax.inject.Inject
@@ -13,7 +12,6 @@ import javax.inject.Inject
  */
 @Reusable
 class ApiDomainMapper @Inject constructor(
-    private val deviceIdManager: DeviceIdManager,
     private val dateConverter: DateConverter
 ) {
     fun toDomainModel(apiTodoItem: ApiTodoItem): TodoItem {
@@ -28,7 +26,7 @@ class ApiDomainMapper @Inject constructor(
         )
     }
 
-    fun toApiModel(todoItem: TodoItem): ApiTodoItem {
+    fun toApiModel(todoItem: TodoItem, deviceId: String): ApiTodoItem {
         return ApiTodoItem(
             id = todoItem.id,
             text = todoItem.text,
@@ -38,7 +36,7 @@ class ApiDomainMapper @Inject constructor(
             createdAt = dateConverter.fromDate(todoItem.createdAt),
             modifiedAt = dateConverter.fromDate(todoItem.modifiedAt),
             color = "#FFFFFF",
-            lastUpdatedBy = deviceIdManager.deviceId
+            lastUpdatedBy = deviceId
         )
     }
 }

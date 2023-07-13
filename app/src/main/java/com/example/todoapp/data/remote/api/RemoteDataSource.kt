@@ -7,6 +7,7 @@ import com.example.todoapp.data.remote.model.requests.TodoItemRequestBody
 import com.example.todoapp.data.remote.model.requests.TodoListRequestBody
 import com.example.todoapp.data.remote.model.responses.TodoItemResponseBody
 import com.example.todoapp.data.remote.model.responses.TodoListResponseBody
+import com.example.todoapp.data.util.DeviceIdManager
 import com.example.todoapp.di.scope.AppScope
 import javax.inject.Inject
 
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @AppScope
 class RemoteDataSource @Inject constructor(
     private val apiService: TodoApiService,
-    private val apiDomainMapper: ApiDomainMapper
+    private val apiDomainMapper: ApiDomainMapper,
+    private val deviceIdManager: DeviceIdManager
 ) {
     // todo: probably create revision interceptor
     @Volatile
@@ -40,13 +42,20 @@ class RemoteDataSource @Inject constructor(
     }
 
     suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        apiService.updateTodoItems(_revision, TodoListRequestBody(todoItems.map(apiDomainMapper::toApiModel)))
+        apiService.updateTodoItems(
+            _revision,
+            TodoListRequestBody(
+                todoItems.map {
+                    apiDomainMapper.toApiModel(it, deviceIdManager.deviceId)
+                }
+            )
+        )
     }
 
     suspend fun addTodoItem(todoItem: TodoItem) {
         val response = apiService.addTodoItem(
             _revision,
-            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem))
+            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem, deviceIdManager.deviceId))
         )
         response.body()?.let { updateRevision(it) }
     }
@@ -54,7 +63,7 @@ class RemoteDataSource @Inject constructor(
     suspend fun updateTodoItem(todoItem: TodoItem) {
         val response = apiService.updateTodoItem(
             todoItem.id,
-            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem))
+            TodoItemRequestBody(apiDomainMapper.toApiModel(todoItem, deviceIdManager.deviceId))
         )
         response.body()?.let { updateRevision(it) }
     }
