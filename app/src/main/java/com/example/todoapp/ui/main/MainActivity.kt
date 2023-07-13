@@ -12,6 +12,7 @@ import androidx.navigation.ui.navigateUp
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.DataResult
+import com.example.todoapp.data.remote.exceptions.ApiException
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.di.component.ActivityComponent
 import com.google.android.material.snackbar.Snackbar
@@ -55,7 +56,11 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.changeItemState.collectLatest {
                     when (it) {
                         is DataResult.Error -> {
-                            showSnackbar(getString(R.string.update_error))
+                            when (it.throwable) {
+                                is ApiException.NetworkException -> {
+                                    showSnackbar(getString(R.string.update_error))
+                                }
+                            }
                         }
                         else -> {}
                     }
