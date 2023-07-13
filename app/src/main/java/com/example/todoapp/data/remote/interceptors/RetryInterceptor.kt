@@ -5,19 +5,21 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
-class RetryInterceptor: Interceptor {
+/**
+ * Interceptor that automatically retries failed network requests a certain number of times.
+ */
+class RetryInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var response = chain.proceed(request)
         var retryCount = 0
-
-        while (!response.isSuccessful && retryCount < 3) {
+        while (!response.isSuccessful && retryCount < MAX_RETRIES) {
             try {
                 response.close()
                 response = chain.proceed(request)
                 retryCount += 1
             } catch (e: IOException) {
-                Log.d(TAG, "intercept: $retryCount")
+                Log.d(TAG, "intercept: $retryCount ${e.message}", e)
             }
         }
 
@@ -25,6 +27,7 @@ class RetryInterceptor: Interceptor {
     }
 
     companion object {
+        const val MAX_RETRIES = 3
         const val TAG = "RetryInterceptor"
     }
 }

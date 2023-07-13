@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 import com.example.todoapp.data.model.Priority
 import java.util.*
 
+/**
+ * Entity class representing an item in the local database.
+ */
 @Entity(tableName = "todo_items")
 data class TodoItemEntity(
     @PrimaryKey val id: String,
@@ -14,6 +17,6 @@ data class TodoItemEntity(
     @ColumnInfo(name = "deadline") val deadline: Date? = null,
     @ColumnInfo(name = "is_completed") val isCompleted: Boolean = false,
     @ColumnInfo(name = "created_at") val createdAt: Date = Date(),
-    @ColumnInfo(name = "modified_at") val modifiedAt: Date? = null,
+    @ColumnInfo(name = "modified_at") val modifiedAt: Date = Date(),
     @ColumnInfo(name = "is_deleted") val isDeleted: Boolean = false
 )

@@ -7,14 +7,17 @@ import com.example.todoapp.R
 import com.example.todoapp.data.model.Priority
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.databinding.TodoItemBinding
-import com.example.todoapp.util.DateParser
+import com.example.todoapp.ui.util.DateParser
 
+/**
+ * ViewHolder class for displaying an item in the RecyclerView.
+ */
 class TodoItemViewHolder(
     private val binding: TodoItemBinding,
     private val callbacks: TodoItemChangeCallbacks
-    ) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(todoItem: TodoItem, position: Int){
+    fun onBind(todoItem: TodoItem, position: Int) {
         setTaskDeadline(todoItem)
         setTaskDescription(todoItem)
         setPriorityIcon(todoItem)

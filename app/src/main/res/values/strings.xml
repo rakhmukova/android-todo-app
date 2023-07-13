@@ -26,4 +26,5 @@
 
   <string name="upload_error">Could not load data from server</string>
   <string name="update_error">Your changes will be uploaded as soon as you\'re back online</string>
+  <string name="not_authorized_error">Authorize please</string>
 </resources>

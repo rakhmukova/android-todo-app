@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.todolist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.repository.TodoItemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,8 +10,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class TodoListViewModel(private val repository: TodoItemRepository) : ViewModel() {
+/**
+ * ViewModel class for managing the list of items.
+ */
+class TodoListViewModel @Inject constructor(private val repository: TodoItemRepository) : ViewModel() {
     private val _showOnlyCompletedTasks: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _completedTasksCount: MutableStateFlow<Int> = MutableStateFlow(0)
 

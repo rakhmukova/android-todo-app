@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,16 +11,23 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.DataState
+import com.example.todoapp.data.DataResult
 import com.example.todoapp.databinding.ActivityMainBinding
+import com.example.todoapp.di.component.ActivityComponent
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * The main activity of the TodoApp.
+ */
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by lazy {
-        (application as TodoApp).mainViewModel
+    lateinit var activityComponent: ActivityComponent
+        private set
+
+    private val mainViewModel: MainViewModel by viewModels {
+        activityComponent.viewModelFactory
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -27,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        activityComponent = (applicationContext as TodoApp).appComponent.activityComponent
+        activityComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,12 +48,13 @@ class MainActivity : AppCompatActivity() {
         setupViewModel()
     }
 
+    // todo: pass only message to activity?
     private fun setupViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.addTodoItemState.collectLatest {
+                mainViewModel.changeItemState.collectLatest {
                     when (it) {
-                        is DataState.Error -> {
+                        is DataResult.Error -> {
                             showSnackbar(getString(R.string.update_error))
                         }
                         else -> {}
@@ -53,38 +65,12 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.removeTodoItemState.collectLatest {
+                mainViewModel.syncWithBackend.collectLatest {
                     when (it) {
-                        is DataState.Error -> {
-                            showSnackbar(getString(R.string.update_error))
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.updateTodoItemState.collectLatest {
-                    when (it) {
-                        is DataState.Error -> {
-                            showSnackbar(getString(R.string.update_error))
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.syncWithBackend.collect {
-                    when (it) {
-                        true -> {}
                         false -> {
                             showSnackbar(getString(R.string.upload_error))
                         }
+                        true -> {}
                     }
                 }
             }
@@ -93,11 +79,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) ||
+            super.onSupportNavigateUp()
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(binding.root, message, 1000).show()
+        Snackbar.make(binding.root, message, SNACKBAR_DURATION).show()
+    }
+
+    companion object {
+        private const val SNACKBAR_DURATION = 1000
     }
 }

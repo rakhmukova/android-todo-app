@@ -1,15 +1,20 @@
-package com.example.todoapp.data.remote
+package com.example.todoapp.data.remote.exceptions
 
 import okhttp3.Request
 import okio.Timeout
-import retrofit2.*
+import retrofit2.Call
 import retrofit2.CallAdapter
+import retrofit2.Callback
 import retrofit2.HttpException
+import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * Custom CallAdapter.Factory implementation that wraps Retrofit's Call with an ErrorHandlingCall
+ * to handle API exceptions.
+ */
 class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
     override fun get(returnType: Type, annotations: Array<out Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
         if (getRawType(returnType) != Call::class.java) {
@@ -33,15 +38,17 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
         override fun enqueue(callback: Callback<T>) {
             delegate.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
-                    if (response.isSuccessful && response.code() in 200..299) {
+                    if (response.isSuccessful && response.code()
+                        in HttpStatusCodes.SUCCESS_RANGE_START..HttpStatusCodes.SUCCESS_RANGE_END
+                    ) {
                         callback.onResponse(call, response)
                     } else {
-                        callback.onFailure(call, convert(HttpException(response)))
+                        callback.onFailure(call, ExceptionConverter.toApiException(HttpException(response)))
                     }
                 }
 
                 override fun onFailure(call: Call<T>, t: Throwable) {
-                    callback.onFailure(call, convert(t))
+                    callback.onFailure(call, ExceptionConverter.toApiException(t))
                 }
             })
         }
@@ -74,26 +81,4 @@ class ErrorConverterCallAdapterFactory : CallAdapter.Factory() {
             return delegate.timeout()
         }
     }
-
-    private fun convert(throwable: Throwable): Throwable {
-        return when (throwable) {
-            is HttpException -> {
-                when (throwable.code()) {
-                    400 -> NotSynchronizedDataException()
-                    401 -> UnauthorizedException()
-                    404 -> ElementNotFoundException()
-                    500 -> ServerException()
-                    else -> NetworkException(throwable)
-                }
-            }
-            is IOException -> NetworkException(throwable)
-            else -> Exception()
-        }
-    }
-
-    class NotSynchronizedDataException : Exception("Not Synchronized Data")
-    class UnauthorizedException: Exception("Unauthorized")
-    class ElementNotFoundException: Exception("Not Found")
-    class ServerException: Exception("Server Error")
-    class NetworkException(cause: Throwable) : IOException("Network Error", cause)
 }

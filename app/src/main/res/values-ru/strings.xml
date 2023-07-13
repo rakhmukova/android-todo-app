@@ -29,4 +29,5 @@
   <string name="upload_error">Не удалось загрузить данные с сервера</string>
   <string name="update_error">Ваши изменения будут загружены,
     как только вы снова будете подключены к интернету</string>
+  <string name="not_authorized_error">Авторизуйтесь, пожалуйста</string>
 </resources>
