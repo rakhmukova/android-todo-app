@@ -29,7 +29,6 @@ class TodoItemRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val connectivityMonitoring: ConnectivityMonitoring
 ) {
-    // todo: create repo to handle different errors?
     private val _syncWithBackend = MutableStateFlow(true)
     val syncWithBackend: StateFlow<Boolean>
         get() = _syncWithBackend

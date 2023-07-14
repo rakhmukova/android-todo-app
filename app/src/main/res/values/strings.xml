@@ -32,6 +32,8 @@
   <string name="deadline_channel_description">Receive notifications about upcoming deadlines</string>
   <string name="notifications">Notifications</string>
   <string name="allow_notifications">Allow</string>
+  <string name="upcoming_deadline">Upcoming deadline</string>
+  <string name="deadline_notification_form">%1$s: %2$s\n%3$s</string>
 
   <string name="theme">Theme</string>
   <string name="dark_theme">Always dark</string>

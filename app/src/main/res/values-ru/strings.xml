@@ -35,6 +35,8 @@
   <string name="deadline_channel_description">Получайте уведомления о предстоящих дедлайнах</string>
   <string name="notifications">Уведомления</string>
   <string name="allow_notifications">Разрешить</string>
+  <string name="upcoming_deadline">Предстоящий дедлайн</string>
+  <string name="deadline_notification_form">%1$s: %2$s\n%3$s</string>
 
   <string name="theme">Тема</string>
   <string name="dark_theme">Всегда темная</string>
