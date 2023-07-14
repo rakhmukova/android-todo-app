@@ -1,32 +1,18 @@
 package com.example.todoapp.ui.util
 
-import android.nfc.FormatException
+import android.content.Context
+import com.example.todoapp.R
 import com.example.todoapp.data.model.Priority
 
 /**
- * Utility class for mapping priority enum values to string representations and vice versa.
+ * Utility class for mapping priority enum values to string resource.
  */
 object PriorityMapper {
-    fun mapToString(priority: Priority): String {
+    fun mapToString(priority: Priority, context: Context): String {
         return when (priority) {
-            Priority.LOW -> "Low"
-            Priority.COMMON -> "No"
-            Priority.HIGH -> "High"
+            Priority.LOW -> context.getString(R.string.low_priority)
+            Priority.COMMON -> context.getString(R.string.no_priority)
+            Priority.HIGH -> context.getString(R.string.high_priority)
         }
     }
-
-    fun mapToPriority(priority: String): Priority {
-        return when (priority) {
-            LOW -> Priority.LOW
-            COMMON -> Priority.COMMON
-            HIGH -> Priority.HIGH
-            else -> {
-                throw FormatException("Unrecognized priority type")
-            }
-        }
-    }
-
-    const val LOW = "Low"
-    const val COMMON = "No"
-    const val HIGH = "High"
 }

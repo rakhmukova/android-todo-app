@@ -59,6 +59,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.6.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'androidx.room:room-runtime:2.5.2'
+    implementation 'androidx.compose.foundation:foundation-layout:1.4.3'
     kapt "androidx.room:room-compiler:2.5.2"
     implementation 'androidx.room:room-ktx:2.5.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
