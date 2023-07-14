@@ -45,7 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_task"
-        style="@style/SaveButtonStyle"
+        android:background="@drawable/transparent_drawable"
+        android:textColor="@color/blue"
+        style="@style/AppText.Button"
         android:layout_gravity="end|center_vertical"/>
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -92,8 +94,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:textSize="16sp"
-        android:textStyle="normal"
+        style="@style/AppText.Body"
         app:layout_constraintTop_toBottomOf="@id/task_description" />
 
       <TextView
@@ -109,7 +110,7 @@
       <View
         android:id="@+id/below_importance_separator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -122,7 +123,7 @@
         android:layout_height="wrap_content"
         android:text="@string/deadline"
         android:textColor="@color/label_primary"
-        android:textSize="16sp"
+        style="@style/AppText.Body"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -155,10 +156,8 @@
       <View
         android:id="@+id/below_do_up_separator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginTop="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@color/support_separator"
         app:layout_constraintTop_toBottomOf="@id/deadline_date" />
 
