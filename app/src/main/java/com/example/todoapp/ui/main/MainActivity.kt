@@ -3,6 +3,7 @@ package com.example.todoapp.ui.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,11 +14,14 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.data.DataResult
 import com.example.todoapp.data.remote.exceptions.ApiException
+import com.example.todoapp.data.repository.LocalSettingsRepository
+import com.example.todoapp.data.util.AppTheme
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.di.component.ActivityComponent
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * The main activity of the TodoApp.
@@ -34,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    @Inject
+    lateinit var localSettingsRepository: LocalSettingsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,6 +54,22 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupViewModel()
+        setupThemeUpdateListener()
+    }
+
+    private fun setupThemeUpdateListener() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                localSettingsRepository.appTheme.collect { appTheme ->
+                    val nightMode = when (appTheme) {
+                        AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                        AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                    AppCompatDelegate.setDefaultNightMode(nightMode)
+                }
+            }
+        }
     }
 
     // todo: pass only message to activity?

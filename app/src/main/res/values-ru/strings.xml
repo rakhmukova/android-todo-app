@@ -30,4 +30,14 @@
   <string name="update_error">Ваши изменения будут загружены,
     как только вы снова будете подключены к интернету</string>
   <string name="not_authorized_error">Авторизуйтесь, пожалуйста</string>
+
+  <string name="deadline_channel_name">Предстоящие дедлайны</string>
+  <string name="deadline_channel_description">Получайте уведомления о предстоящих дедлайнах</string>
+  <string name="notifications">Уведомления</string>
+  <string name="allow_notifications">Разрешить</string>
+
+  <string name="theme">Тема</string>
+  <string name="dark_theme">Всегда темная</string>
+  <string name="light_theme">Всегда светлая</string>
+  <string name="system_theme">Как в системе</string>
 </resources>
