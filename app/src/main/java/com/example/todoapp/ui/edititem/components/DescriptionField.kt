@@ -1,10 +1,8 @@
 package com.example.todoapp.ui.edititem.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -22,20 +20,17 @@ import com.example.todoapp.ui.util.theme.ExtendedTheme
 
 @Composable
 fun DescriptionField(text: String, onTextChange: (String) -> Unit) {
-    // todo: fix borders and padding
+    // todo: fix round borders
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 16.dp)
-            .wrapContentWidth(align = Alignment.CenterHorizontally)
-            .border(
-                width = 1.dp,
-                color = Color.Transparent,
-                shape = RoundedCornerShape(5.dp)
-            ),
-        elevation = 4.dp
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            .wrapContentWidth(align = Alignment.CenterHorizontally),
+        elevation = 8.dp
     ) {
         TextField(
+            modifier = Modifier
+                .fillMaxWidth(),
             value = text,
             onValueChange = onTextChange,
             textStyle = MaterialTheme.typography.body1,
@@ -44,7 +39,8 @@ fun DescriptionField(text: String, onTextChange: (String) -> Unit) {
                 backgroundColor = ExtendedTheme.colors.backSecondary,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = ExtendedTheme.colors.labelPrimary
             ),
             placeholder = { Text(stringResource(R.string.initial_description)) }
         )
