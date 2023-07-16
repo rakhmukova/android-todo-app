@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
@@ -56,7 +57,8 @@ fun DeadlinePicker(
                 modifier = Modifier.clickable {
                     datePickerDialog.show()
                 },
-                color = Blue
+                color = Blue,
+                style = MaterialTheme.typography.subtitle1
             )
         }
         Switch(
