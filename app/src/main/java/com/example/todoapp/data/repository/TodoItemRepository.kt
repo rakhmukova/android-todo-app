@@ -141,13 +141,15 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.removeTodoItem(itemId)
             remoteDataSource.removeTodoItem(itemId)
-            _changeItemState.value = DataResult.Success(ChangeItemAction.Delete(itemId))
+            val todoItem = findById(itemId)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.Delete(todoItem))
             Log.d(TAG, "removeTodoItem: $itemId")
         }
         tryAndHandleNetworkException(
             block = block,
             errorBlock = {
-                _changeItemState.value = DataResult.Error(it, ChangeItemAction.Delete(itemId))
+                val todoItem = findById(itemId)
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.Delete(todoItem))
                 Log.e(TAG, "removeTodoItem: $itemId", it)
             },
             notSyncDataErrorBlock = {

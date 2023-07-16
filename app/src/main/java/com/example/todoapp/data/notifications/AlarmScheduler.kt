@@ -46,10 +46,10 @@ class AlarmScheduler @Inject constructor(
     }
 
     private suspend fun handleAction(itemAction: ChangeItemAction) {
-        val todoItem = todoItemRepository.findById(itemAction.todoItemId) ?: return
-        Log.d(TAG, "handleAction: $todoItem")
         when (itemAction) {
             is ChangeItemAction.Add -> {
+                val todoItem = todoItemRepository.findById(itemAction.todoItemId) ?: return
+                Log.d(TAG, "handleAction: $todoItem")
                 scheduleAlarm(todoItem)
             }
             is ChangeItemAction.Update -> {

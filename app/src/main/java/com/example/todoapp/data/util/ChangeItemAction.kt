@@ -1,9 +1,9 @@
 package com.example.todoapp.data.util
 
-sealed class ChangeItemAction(
-    val todoItemId: String
-) {
-    class Add(todoItemId: String) : ChangeItemAction(todoItemId)
-    class Delete(todoItemId: String) : ChangeItemAction(todoItemId)
-    class Update(todoItemId: String) : ChangeItemAction(todoItemId)
+import com.example.todoapp.data.model.TodoItem
+
+sealed class ChangeItemAction {
+    class Add(val todoItemId: String) : ChangeItemAction()
+    class Update(val todoItemId: String) : ChangeItemAction()
+    class Delete(val todoItem: TodoItem?) : ChangeItemAction()
 }
