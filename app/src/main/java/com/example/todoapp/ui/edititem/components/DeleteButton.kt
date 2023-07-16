@@ -34,7 +34,9 @@ fun DeleteButton(onDelete: () -> Unit, enabled: Boolean = true) {
         onClick = onDelete,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
-            contentColor = if (enabled) Red else GrayLight
+            contentColor = Red,
+            disabledBackgroundColor = Color.Transparent,
+            disabledContentColor = GrayLight
         ),
         shape = MaterialTheme.shapes.small,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
@@ -16,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.ui.edititem.EditTodoItemViewModel
+import com.example.todoapp.ui.util.components.AppDivider
 import com.example.todoapp.ui.util.theme.ExtendedTheme
 import kotlinx.coroutines.launch
 
@@ -62,12 +62,12 @@ fun EditItemScreenContent(
                     priority = todoItem.priority,
                     onPriorityClick = { scope.launch { bottomSheetState.show() } }
                 )
-                Divider(modifier = Modifier.padding(16.dp), thickness = 0.5.dp)
+                AppDivider(modifier = Modifier.padding(16.dp))
                 DeadlinePicker(
                     deadline = todoItem.deadline,
                     onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
                 )
-                Divider(thickness = 0.5.dp)
+                AppDivider()
                 DeleteButton(onDelete = onDelete)
             }
         }

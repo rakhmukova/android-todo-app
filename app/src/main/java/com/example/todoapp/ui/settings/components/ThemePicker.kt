@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.data.util.AppTheme
 import com.example.todoapp.ui.util.ThemeMapper
+import com.example.todoapp.ui.util.components.BodyText
 import com.example.todoapp.ui.util.theme.ExtendedTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.settings.components
+package com.example.todoapp.ui.util.components
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
