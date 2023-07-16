@@ -42,4 +42,6 @@
   <string name="dark_theme">Всегда темная</string>
   <string name="light_theme">Всегда светлая</string>
   <string name="system_theme">Как в системе</string>
+  <string name="cancel">Cancel</string>
+  <string name="delete_countdown">Будет удалена через %1$d сек.</string>
 </resources>

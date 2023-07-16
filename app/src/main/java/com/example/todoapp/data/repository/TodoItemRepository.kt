@@ -187,6 +187,11 @@ class TodoItemRepository @Inject constructor(
         )
     }
 
+    suspend fun recoverTodoItem(todoItem: TodoItem) = withContext(Dispatchers.IO) {
+        Log.d(TAG, "recoverTodoItem: $todoItem")
+        addTodoItem(todoItem.copy(isDeleted = false))
+    }
+
     suspend fun findById(itemId: String): TodoItem? = withContext(Dispatchers.IO) {
         return@withContext localDataSource.findById(itemId)
     }

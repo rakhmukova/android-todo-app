@@ -39,4 +39,6 @@
   <string name="dark_theme">Always dark</string>
   <string name="light_theme">Always light</string>
   <string name="system_theme">System</string>
+  <string name="cancel">Cancel</string>
+  <string name="delete_countdown">Will be deleted in %1$d seconds</string>
 </resources>

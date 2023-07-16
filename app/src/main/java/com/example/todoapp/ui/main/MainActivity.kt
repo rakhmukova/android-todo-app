@@ -18,6 +18,8 @@ import com.example.todoapp.data.repository.LocalSettingsRepository
 import com.example.todoapp.data.util.AppTheme
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.di.component.ActivityComponent
+import com.example.todoapp.ui.main.components.DeleteSnackbarWrapper
+import com.example.todoapp.ui.util.theme.AppTheme
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        setupDeleteSnackbar()
 
         setupViewModel()
         setupThemeUpdateListener()
@@ -109,6 +113,18 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) ||
             super.onSupportNavigateUp()
+    }
+
+    private fun setupDeleteSnackbar() {
+        binding.deleteSnackbar.apply {
+            setContent {
+                AppTheme {
+                    DeleteSnackbarWrapper(
+                        mainViewModel = mainViewModel
+                    )
+                }
+            }
+        }
     }
 
     private fun showSnackbar(message: String) {
