@@ -70,7 +70,6 @@ fun EditItemScreenContent(
         sheetState = bottomSheetState,
         onPriorityChange = {
             editTodoItemViewModel.updatePriority(it)
-            scope.launch { bottomSheetState.hide() }
         }
     )
 }
