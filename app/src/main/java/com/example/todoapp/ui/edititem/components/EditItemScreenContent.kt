@@ -33,43 +33,43 @@ fun EditItemScreenContent(
     )
     val scope = rememberCoroutineScope()
 
-    Scaffold(
-        backgroundColor = ExtendedTheme.colors.backPrimary,
-        topBar = {
-            TopBar(
-                onSave = onSave,
-                onClose = onClose
-            )
-        },
-    ) { padding ->
-        Column(
-            // todo: make scrollable using lazy
-            modifier = Modifier
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-        ) {
-            DescriptionField(
-                text = todoItem.text,
-                onTextChange = { editTodoItemViewModel.updateDescription(it) }
-            )
-            PriorityPicker(
-                priority = todoItem.priority,
-                onPriorityClick = { scope.launch { bottomSheetState.show() } }
-            )
-            Divider(modifier = Modifier.padding(16.dp), thickness = 0.5.dp)
-            DeadlinePicker(
-                deadline = todoItem.deadline,
-                onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
-            )
-            Divider(thickness = 0.5.dp)
-            DeleteButton(onDelete = onDelete)
-        }
-    }
-
     PriorityBottomSheet(
         sheetState = bottomSheetState,
         onPriorityChange = {
             editTodoItemViewModel.updatePriority(it)
         }
-    )
+    ) {
+        Scaffold(
+            backgroundColor = ExtendedTheme.colors.backPrimary,
+            topBar = {
+                TopBar(
+                    onSave = onSave,
+                    onClose = onClose
+                )
+            },
+        ) { padding ->
+            Column(
+                // todo: make scrollable using lazy
+                modifier = Modifier
+                    .padding(padding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                DescriptionField(
+                    text = todoItem.text,
+                    onTextChange = { editTodoItemViewModel.updateDescription(it) }
+                )
+                PriorityPicker(
+                    priority = todoItem.priority,
+                    onPriorityClick = { scope.launch { bottomSheetState.show() } }
+                )
+                Divider(modifier = Modifier.padding(16.dp), thickness = 0.5.dp)
+                DeadlinePicker(
+                    deadline = todoItem.deadline,
+                    onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
+                )
+                Divider(thickness = 0.5.dp)
+                DeleteButton(onDelete = onDelete)
+            }
+        }
+    }
 }

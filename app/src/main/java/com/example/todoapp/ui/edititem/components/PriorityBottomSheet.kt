@@ -31,7 +31,8 @@ import com.example.todoapp.ui.util.theme.Red
 @Composable
 fun PriorityBottomSheet(
     sheetState: ModalBottomSheetState,
-    onPriorityChange: (Priority) -> Unit
+    onPriorityChange: (Priority) -> Unit,
+    content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -69,8 +70,7 @@ fun PriorityBottomSheet(
                     )
                 }
             }
-        }
-    ) {
-        // Screen content
-    }
+        },
+        content = content
+    )
 }
