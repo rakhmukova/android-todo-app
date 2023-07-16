@@ -1,8 +1,11 @@
 package com.example.todoapp.ui.main.components
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Button
@@ -13,6 +16,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +36,11 @@ private const val SECOND = 1000L
 fun DeleteSnackbar(snackbarHostState: SnackbarHostState) {
     val countdownSeconds = remember { mutableStateOf(NUM_OF_SECONDS) }
 
+    val offsetY by animateDpAsState(
+        targetValue = if (snackbarHostState.currentSnackbarData != null) 0.dp else 100.dp,
+        animationSpec = tween(durationMillis = 300)
+    )
+
     LaunchedEffect(snackbarHostState.currentSnackbarData) {
         if (snackbarHostState.currentSnackbarData != null) {
             countdownSeconds.value = NUM_OF_SECONDS
@@ -48,7 +57,8 @@ fun DeleteSnackbar(snackbarHostState: SnackbarHostState) {
         snackbar = {
             Snackbar(
                 modifier = Modifier
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .offset(y = offsetY),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
