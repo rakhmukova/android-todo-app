@@ -28,7 +28,8 @@ class EditTodoItemViewModel @AssistedInject constructor(
     private val _screenState = MutableStateFlow(ScreenState.LOADING)
     val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
 
-    private var _isExisting: Boolean? = null
+    var isExisting: Boolean = false
+        private set
 
     init {
         viewModelScope.launch {
@@ -58,7 +59,7 @@ class EditTodoItemViewModel @AssistedInject constructor(
     fun saveTodoItem() {
         val modifiedAt = Date()
         val currentTodoItem = _todoItem.value.copy(modifiedAt = modifiedAt)
-        if (_isExisting == true) {
+        if (isExisting == true) {
             viewModelScope.launch {
                 repository.updateTodoItem(currentTodoItem)
             }
@@ -78,15 +79,15 @@ class EditTodoItemViewModel @AssistedInject constructor(
 
     private suspend fun createOrFind(id: String) {
         if (id.isEmpty()) {
-            _isExisting = false
+            isExisting = false
             _todoItem.value = TodoItem()
         } else {
             val todoItem = repository.findById(id)
             if (todoItem == null) {
-                _isExisting = false
+                isExisting = false
                 _todoItem.value = TodoItem()
             } else {
-                _isExisting = true
+                isExisting = true
                 _todoItem.value = todoItem
             }
         }

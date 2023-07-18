@@ -30,6 +30,7 @@ fun EditItemScreenContent(
 ) {
     val todoItem by editTodoItemViewModel.todoItem.collectAsState()
     val screenState by editTodoItemViewModel.screenState.collectAsState()
+    val isExistingItem = editTodoItemViewModel.isExisting
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
@@ -72,7 +73,7 @@ fun EditItemScreenContent(
                         onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
                     )
                     AppDivider()
-                    DeleteButton(onDelete = onDelete)
+                    DeleteButton(onDelete = onDelete, enabled = isExistingItem)
                 }
             }
         }

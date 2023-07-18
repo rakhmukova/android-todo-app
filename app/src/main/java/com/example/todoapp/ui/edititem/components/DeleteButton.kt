@@ -16,11 +16,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.ui.util.theme.GrayLight
+import com.example.todoapp.ui.util.theme.ExtendedTheme
 import com.example.todoapp.ui.util.theme.Red
 
 @Composable
-fun DeleteButton(onDelete: () -> Unit, enabled: Boolean = true) {
+fun DeleteButton(onDelete: () -> Unit, enabled: Boolean) {
     Button(
         modifier = Modifier.padding(8.dp),
         content = {
@@ -36,7 +36,7 @@ fun DeleteButton(onDelete: () -> Unit, enabled: Boolean = true) {
             backgroundColor = Color.Transparent,
             contentColor = Red,
             disabledBackgroundColor = Color.Transparent,
-            disabledContentColor = GrayLight
+            disabledContentColor = ExtendedTheme.colors.labelDisable
         ),
         shape = MaterialTheme.shapes.small,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),
