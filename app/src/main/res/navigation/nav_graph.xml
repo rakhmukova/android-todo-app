@@ -13,7 +13,19 @@
 
     <action
       android:id="@+id/action_TodoItemsFragment_to_AddItemFragment"
-      app:destination="@id/AddItemFragment"/>
+      app:destination="@id/AddItemFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+      android:id="@+id/action_TodoItemsFragment_to_SettingsFragment"
+      app:destination="@id/SettingsFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" />
   </fragment>
 
   <fragment
@@ -28,6 +40,23 @@
 
     <action
       android:id="@+id/action_AddItemFragment_to_TodoItemsFragment"
-      app:destination="@id/TodoItemsFragment"/>
+      app:destination="@id/TodoItemsFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/SettingsFragment"
+    android:name="com.example.todoapp.ui.settings.SettingsFragment">
+
+    <action
+      android:id="@+id/action_SettingsFragment_to_TodoItemsFragment"
+      app:destination="@id/TodoItemsFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" />
   </fragment>
 </navigation>

@@ -27,4 +27,18 @@
   <string name="upload_error">Could not load data from server</string>
   <string name="update_error">Your changes will be uploaded as soon as you\'re back online</string>
   <string name="not_authorized_error">Authorize please</string>
+
+  <string name="deadline_channel_name">Upcoming deadlines</string>
+  <string name="deadline_channel_description">Receive notifications about upcoming deadlines</string>
+  <string name="notifications">Notifications</string>
+  <string name="allow_notifications">Allow</string>
+  <string name="upcoming_deadline">Upcoming deadline</string>
+  <string name="deadline_notification_form">%1$s: %2$s\n%3$s</string>
+
+  <string name="theme">Theme</string>
+  <string name="dark_theme">Always dark</string>
+  <string name="light_theme">Always light</string>
+  <string name="system_theme">System</string>
+  <string name="cancel">Cancel</string>
+  <string name="delete_countdown">Will be deleted in %1$d seconds</string>
 </resources>

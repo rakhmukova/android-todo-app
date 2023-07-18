@@ -6,6 +6,7 @@ import com.example.todoapp.data.local.LocalDataSource
 import com.example.todoapp.data.model.TodoItem
 import com.example.todoapp.data.remote.api.RemoteDataSource
 import com.example.todoapp.data.remote.exceptions.ApiException
+import com.example.todoapp.data.util.ChangeItemAction
 import com.example.todoapp.data.util.ConnectivityMonitoring
 import com.example.todoapp.data.util.NetworkStatus
 import com.example.todoapp.di.scope.AppScope
@@ -28,7 +29,6 @@ class TodoItemRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val connectivityMonitoring: ConnectivityMonitoring
 ) {
-    // todo: create repo to handle different errors?
     private val _syncWithBackend = MutableStateFlow(true)
     val syncWithBackend: StateFlow<Boolean>
         get() = _syncWithBackend
@@ -59,7 +59,6 @@ class TodoItemRepository @Inject constructor(
         networkErrorBlock: suspend (Exception) -> Unit = {},
         errorBlock: suspend (Exception) -> Unit = {}
     ) = withContext(Dispatchers.IO) {
-        // todo: make errorBlock run on other errors
         try {
             block()
             Log.d(TAG, "tryAndHandleNetworkException: Success")
@@ -77,6 +76,8 @@ class TodoItemRepository @Inject constructor(
                 }
                 else -> {}
             }
+            // run error block always after specific error blocks
+            errorBlock(e)
         } catch (e: Exception) {
             Log.d(TAG, "tryAndHandleNetworkException: ${e.message}", e)
             errorBlock(e)
@@ -116,12 +117,14 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.addTodoItem(todoItem)
             remoteDataSource.addTodoItem(todoItem)
-            _changeItemState.value = DataResult.Success(ChangeItemAction.ADD)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.Add(todoItem.id))
+            Log.d(TAG, "addTodoItem: ${todoItem.id}")
         }
         tryAndHandleNetworkException(
             block = block,
-            networkErrorBlock = {
-                _changeItemState.value = DataResult.Error(it, ChangeItemAction.ADD)
+            errorBlock = {
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.Add(todoItem.id))
+                Log.e(TAG, "addTodoItem: ${todoItem.id}", it)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -138,12 +141,16 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.removeTodoItem(itemId)
             remoteDataSource.removeTodoItem(itemId)
-            _changeItemState.value = DataResult.Success(ChangeItemAction.DELETE)
+            val todoItem = findById(itemId)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.Delete(todoItem))
+            Log.d(TAG, "removeTodoItem: $itemId")
         }
         tryAndHandleNetworkException(
             block = block,
-            networkErrorBlock = {
-                _changeItemState.value = DataResult.Error(it, ChangeItemAction.DELETE)
+            errorBlock = {
+                val todoItem = findById(itemId)
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.Delete(todoItem))
+                Log.e(TAG, "removeTodoItem: $itemId", it)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -160,12 +167,14 @@ class TodoItemRepository @Inject constructor(
         val block: suspend () -> Unit = {
             localDataSource.updateTodoItem(todoItem)
             remoteDataSource.updateTodoItem(todoItem)
-            _changeItemState.value = DataResult.Success(ChangeItemAction.UPDATE)
+            _changeItemState.value = DataResult.Success(ChangeItemAction.Update(todoItem.id))
+            Log.d(TAG, "updateTodoItem: ${todoItem.id}")
         }
         tryAndHandleNetworkException(
             block = block,
-            networkErrorBlock = {
-                _changeItemState.value = DataResult.Error(it, ChangeItemAction.UPDATE)
+            errorBlock = {
+                _changeItemState.value = DataResult.Error(it, ChangeItemAction.Update(todoItem.id))
+                Log.e(TAG, "updateTodoItem: ${todoItem.id}", it)
             },
             notSyncDataErrorBlock = {
                 tryAndHandleNetworkException(
@@ -176,6 +185,11 @@ class TodoItemRepository @Inject constructor(
                 )
             }
         )
+    }
+
+    suspend fun recoverTodoItem(todoItem: TodoItem) = withContext(Dispatchers.IO) {
+        Log.d(TAG, "recoverTodoItem: $todoItem")
+        addTodoItem(todoItem.copy(isDeleted = false))
     }
 
     suspend fun findById(itemId: String): TodoItem? = withContext(Dispatchers.IO) {

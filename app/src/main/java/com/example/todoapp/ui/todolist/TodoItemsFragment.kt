@@ -64,6 +64,7 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
         setupViewModel()
         setupRecyclerView()
         setupCreateTaskButton()
+        setupSettingsButton()
     }
 
     private fun setupViewModel() {
@@ -104,6 +105,13 @@ class TodoItemsFragment : Fragment(), TodoItemChangeCallbacks {
     private fun setupCreateTaskButton() {
         binding.createTaskButton.setOnClickListener {
             findNavController().navigate(R.id.action_TodoItemsFragment_to_AddItemFragment)
+        }
+    }
+
+    private fun setupSettingsButton() {
+        // todo: probably find a more appropriate place for settings button
+        binding.settingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_TodoItemsFragment_to_SettingsFragment)
         }
     }
 

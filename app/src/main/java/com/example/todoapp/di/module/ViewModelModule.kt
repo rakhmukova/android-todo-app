@@ -1,8 +1,8 @@
 package com.example.todoapp.di.module
 
 import androidx.lifecycle.ViewModel
-import com.example.todoapp.ui.edititem.EditTodoItemViewModel
 import com.example.todoapp.ui.main.MainViewModel
+import com.example.todoapp.ui.settings.SettingsViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -25,10 +25,10 @@ interface ViewModelModule {
     fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
     @Binds
-    @[IntoMap ViewModelKey(EditTodoItemViewModel::class)]
-    fun bindEditTodoItemViewModel(editTodoItemViewModel: EditTodoItemViewModel): ViewModel
-
-    @Binds
     @[IntoMap ViewModelKey(TodoListViewModel::class)]
     fun bindTodoListViewModel(todoListViewModel: TodoListViewModel): ViewModel
+
+    @Binds
+    @[IntoMap ViewModelKey(SettingsViewModel::class)]
+    fun bindSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel
 }
