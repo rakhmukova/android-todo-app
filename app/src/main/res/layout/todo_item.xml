@@ -10,8 +10,8 @@
 
   <androidx.appcompat.widget.AppCompatCheckBox
     android:id="@+id/is_completed_check_box"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
     android:button="@drawable/checkbox_task_done"
     android:gravity="top"
     app:tint="@color/white"
@@ -25,6 +25,7 @@
     app:layout_constraintStart_toEndOf="@+id/is_completed_check_box"
     app:layout_constraintTop_toTopOf="parent"
     android:layout_marginTop="4dp"
+    android:layout_marginStart="4dp"
     android:contentDescription="@string/priority"
     android:visibility="gone" />
 
@@ -58,7 +59,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/info_outline"
-    app:tint="@color/label_tertiary"
+    android:layout_marginStart="8dp"
     app:layout_constraintStart_toEndOf="@+id/task_text"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
