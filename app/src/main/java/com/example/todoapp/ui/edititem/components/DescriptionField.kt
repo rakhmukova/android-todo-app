@@ -1,17 +1,18 @@
 package com.example.todoapp.ui.edititem.components
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,31 +21,34 @@ import com.example.todoapp.ui.util.theme.ExtendedTheme
 
 @Composable
 fun DescriptionField(text: String, onTextChange: (String) -> Unit) {
-    // todo: fix round borders
-    Surface(
+    BasicTextField(
+        value = text,
+        onValueChange = onTextChange,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-            .wrapContentWidth(align = Alignment.CenterHorizontally),
-        elevation = 8.dp
-    ) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = text,
-            onValueChange = onTextChange,
-            textStyle = MaterialTheme.typography.body1,
-            minLines = 3,
-            colors = TextFieldDefaults.textFieldColors(
+            .border(1.dp, Color.Transparent, shape = RoundedCornerShape(5.dp)),
+        textStyle = MaterialTheme.typography.body1.copy(color = ExtendedTheme.colors.labelPrimary),
+        cursorBrush = SolidColor(ExtendedTheme.colors.labelPrimary),
+        minLines = 3,
+        decorationBox = { innerTextField ->
+            Card(
+                elevation = 4.dp,
+                modifier = Modifier.padding(16.dp),
                 backgroundColor = ExtendedTheme.colors.backSecondary,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                cursorColor = ExtendedTheme.colors.labelPrimary
-            ),
-            placeholder = { Text(stringResource(R.string.initial_description)) }
-        )
-    }
+                contentColor = ExtendedTheme.colors.labelPrimary
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    if (text.isEmpty()) {
+                        Text(text = stringResource(id = R.string.initial_description))
+                    }
+                    innerTextField()
+                }
+            }
+        }
+    )
 }
 
 @Preview
