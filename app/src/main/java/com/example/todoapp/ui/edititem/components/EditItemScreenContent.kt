@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.ui.edititem.EditTodoItemViewModel
+import com.example.todoapp.ui.edititem.ScreenState
 import com.example.todoapp.ui.util.components.AppDivider
 import com.example.todoapp.ui.util.theme.ExtendedTheme
 import kotlinx.coroutines.launch
@@ -28,47 +29,51 @@ fun EditItemScreenContent(
     onDelete: () -> Unit
 ) {
     val todoItem by editTodoItemViewModel.todoItem.collectAsState()
+    val screenState by editTodoItemViewModel.screenState.collectAsState()
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
     val scope = rememberCoroutineScope()
 
-    PriorityBottomSheet(
-        sheetState = bottomSheetState,
-        onPriorityChange = {
-            editTodoItemViewModel.updatePriority(it)
-        }
-    ) {
-        Scaffold(
-            backgroundColor = ExtendedTheme.colors.backPrimary,
-            topBar = {
-                TopBar(
-                    onSave = onSave,
-                    onClose = onClose
-                )
-            },
-        ) { padding ->
-            Column(
-                // todo: make scrollable using lazy
-                modifier = Modifier
-                    .padding(padding)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                DescriptionField(
-                    text = todoItem.text,
-                    onTextChange = { editTodoItemViewModel.updateDescription(it) }
-                )
-                PriorityPicker(
-                    priority = todoItem.priority,
-                    onPriorityClick = { scope.launch { bottomSheetState.show() } }
-                )
-                AppDivider(modifier = Modifier.padding(16.dp))
-                DeadlinePicker(
-                    deadline = todoItem.deadline,
-                    onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
-                )
-                AppDivider()
-                DeleteButton(onDelete = onDelete)
+    if (screenState == ScreenState.LOADING) {
+        LoadingScreen()
+    } else {
+        PriorityBottomSheet(
+            sheetState = bottomSheetState,
+            onPriorityChange = {
+                editTodoItemViewModel.updatePriority(it)
+            }
+        ) {
+            Scaffold(
+                backgroundColor = ExtendedTheme.colors.backPrimary,
+                topBar = {
+                    TopBar(
+                        onSave = onSave,
+                        onClose = onClose
+                    )
+                },
+            ) { padding ->
+                Column(
+                    modifier = Modifier
+                        .padding(padding)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    DescriptionField(
+                        text = todoItem.text,
+                        onTextChange = { editTodoItemViewModel.updateDescription(it) }
+                    )
+                    PriorityPicker(
+                        priority = todoItem.priority,
+                        onPriorityClick = { scope.launch { bottomSheetState.show() } }
+                    )
+                    AppDivider(modifier = Modifier.padding(16.dp))
+                    DeadlinePicker(
+                        deadline = todoItem.deadline,
+                        onDeadlineChange = { editTodoItemViewModel.updateDeadline(it) }
+                    )
+                    AppDivider()
+                    DeleteButton(onDelete = onDelete)
+                }
             }
         }
     }

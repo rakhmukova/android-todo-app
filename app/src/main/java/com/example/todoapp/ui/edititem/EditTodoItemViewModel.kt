@@ -25,10 +25,16 @@ class EditTodoItemViewModel @AssistedInject constructor(
     private val _todoItem = MutableStateFlow(TodoItem())
     val todoItem: StateFlow<TodoItem> = _todoItem.asStateFlow()
 
+    private val _screenState = MutableStateFlow(ScreenState.LOADING)
+    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
+
     private var _isExisting: Boolean? = null
 
     init {
-        createOrFind(todoItemId)
+        viewModelScope.launch {
+            createOrFind(todoItemId)
+            _screenState.value = ScreenState.LOADED
+        }
     }
 
     fun updateDescription(description: String) {
@@ -70,20 +76,18 @@ class EditTodoItemViewModel @AssistedInject constructor(
         }
     }
 
-    private fun createOrFind(id: String) {
-        if (id == "") {
+    private suspend fun createOrFind(id: String) {
+        if (id.isEmpty()) {
             _isExisting = false
             _todoItem.value = TodoItem()
         } else {
-            viewModelScope.launch {
-                val todoItem = repository.findById(id)
-                if (todoItem == null) {
-                    _isExisting = false
-                    _todoItem.value = TodoItem()
-                } else {
-                    _isExisting = true
-                    _todoItem.value = todoItem
-                }
+            val todoItem = repository.findById(id)
+            if (todoItem == null) {
+                _isExisting = false
+                _todoItem.value = TodoItem()
+            } else {
+                _isExisting = true
+                _todoItem.value = todoItem
             }
         }
     }
