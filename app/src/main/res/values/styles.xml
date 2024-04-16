@@ -37,10 +37,10 @@
 
   <style name="TimePickerStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="android:colorPrimary">@color/blue</item>
-    <item name="android:textColorPrimary">@color/white</item>
+    <item name="android:textColorPrimary">@color/gray</item>
     <item name="android:colorControlActivated">@color/blue</item>
     <item name="android:textColor">@color/white</item>
-    <item name="android:textColorSecondary">@color/label_tertiary</item>
+    <item name="android:textColorSecondary">@color/label_secondary</item>
     <item name="android:colorAccent">@color/blue</item>
     <item name="android:windowBackground">@color/back_secondary</item>
     <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerTheme.ButtonBarButton</item>

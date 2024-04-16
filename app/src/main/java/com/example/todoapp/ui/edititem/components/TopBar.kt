@@ -11,7 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.ui.util.theme.ExtendedTheme
 
 @Composable
-fun TopBar(onSave: () -> Unit, onClose: () -> Unit) {
+fun TopBar(
+    onSave: () -> Unit,
+    onClose: () -> Unit,
+    isSaveEnabled: Boolean = true
+) {
     TopAppBar(
         backgroundColor = ExtendedTheme.colors.backPrimary,
     ) {
@@ -21,7 +25,7 @@ fun TopBar(onSave: () -> Unit, onClose: () -> Unit) {
         ) {
             CloseButton(onClose = onClose)
             Spacer(modifier = Modifier.weight(1f))
-            SaveButton(onSave = onSave)
+            SaveButton(onSave = onSave, isSaveEnabled = isSaveEnabled)
         }
     }
 }
@@ -29,5 +33,5 @@ fun TopBar(onSave: () -> Unit, onClose: () -> Unit) {
 @Preview
 @Composable
 fun TopBarPreview() {
-    TopBar(onSave = {}, onClose = {})
+    TopBar(onSave = {}, onClose = {}, isSaveEnabled = true)
 }

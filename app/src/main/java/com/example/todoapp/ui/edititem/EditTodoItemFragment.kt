@@ -72,7 +72,7 @@ class EditTodoItemFragment : Fragment() {
     }
 
     private fun navigateToItemsFragment() {
-        findNavController().navigate(R.id.action_AddItemFragment_to_TodoItemsFragment)
+        findNavController().popBackStack(R.id.TodoItemsFragment, false)
     }
 
     companion object {

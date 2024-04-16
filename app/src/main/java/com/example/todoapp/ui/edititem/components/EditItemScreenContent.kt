@@ -50,7 +50,8 @@ fun EditItemScreenContent(
                 topBar = {
                     TopBar(
                         onSave = onSave,
-                        onClose = onClose
+                        onClose = onClose,
+                        isSaveEnabled = todoItem.text.isNotEmpty()
                     )
                 },
             ) { padding ->

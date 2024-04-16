@@ -37,6 +37,6 @@ class SettingsFragment : Fragment() {
     }
 
     private fun navigateToItemsFragment() {
-        findNavController().navigate(R.id.action_SettingsFragment_to_TodoItemsFragment)
+        findNavController().popBackStack(R.id.TodoItemsFragment, false)
     }
 }
